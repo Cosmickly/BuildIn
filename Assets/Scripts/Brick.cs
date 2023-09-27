@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class Brick : MonoBehaviour
 {
-    private SpriteRenderer sprite;
+    private SpriteRenderer spriteRend;
     private BrickManager brickManager;
-    public Color col;
+    public int spriteId;
 
     private void Awake() {
-        sprite = GetComponent<SpriteRenderer>();
+        spriteRend = GetComponent<SpriteRenderer>();
     }
     // Start is called before the first frame update
     void Start()
     {
         brickManager = GetComponentInParent<BrickManager>();
-        col = brickManager.colors[Random.Range(0, brickManager.colors.Count)];
-        sprite.color = col;
+        spriteId = Random.Range(0, brickManager.colors.Count);
+        spriteRend.sprite = brickManager.colors[spriteId];
     }
 
     // Update is called once per frame
@@ -34,9 +34,9 @@ public class Brick : MonoBehaviour
 
     public void Activate(bool active) {
         if (active) {
-            sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, 1f);
+            spriteRend.color = new Color(spriteRend.color.r, spriteRend.color.g, spriteRend.color.b, 1f);
         } else {
-            sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, 0.5f);
+            spriteRend.color = new Color(spriteRend.color.r, spriteRend.color.g, spriteRend.color.b, 0.5f);
         }
     }
 

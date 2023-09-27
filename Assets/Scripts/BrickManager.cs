@@ -20,7 +20,7 @@ public class BrickManager : MonoBehaviour
     private Brick heldBrick;
     public BrickHold brickHold;
 
-    public List<Color32> colors = new(3);
+    public List<Sprite> colors = new(3);
 
     private void OnValidate() {
         gridSize.x = Mathf.Clamp(gridSize.x, 0, 7);
@@ -186,13 +186,13 @@ public class BrickManager : MonoBehaviour
         bool removed = false;
         if (topBricks.TryGetValue(pos, out Brick brick)) {
             Debug.Log("Checking");
-            if (topBricks.TryGetValue(pos + new Vector3(-1.2f,0,0), out Brick left) && left.col == brick.col) {
+            if (topBricks.TryGetValue(pos + new Vector3(-offset.x,0,0), out Brick left) && left.spriteId == brick.spriteId) {
                 RemoveTopBrick(left.transform.position);
                 RemoveTopBrick(brick.transform.position);
                 removed = true;
             }
 
-            if (topBricks.TryGetValue(pos + new Vector3(1.2f, 0, 0), out Brick right) && right.col == brick.col) {
+            if (topBricks.TryGetValue(pos + new Vector3(offset.x, 0, 0), out Brick right) && right.spriteId == brick.spriteId) {
                 RemoveTopBrick(right.transform.position);
                 RemoveTopBrick(brick.transform.position);
                 removed = true;
