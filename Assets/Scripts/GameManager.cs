@@ -34,17 +34,19 @@ public class GameManager : MonoBehaviour
     }
 
     public void LoseGame() {
-        Debug.Log("You Lose!");
-        playing = false;
         endText.text = "You Lose!";
-        endScreen.SetActive(true);
+        EndGame();
     }
 
     public void WinGame() {
-        Debug.Log("You Win!");
-        playing = false;
         endText.text = "You Win!";
+        EndGame();
+    }
+
+    private void EndGame() {
+        playing = false;
         endScreen.SetActive(true);
+        Destroy(currentBall);
     }
 
     public void StartGame() {

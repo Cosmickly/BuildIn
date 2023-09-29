@@ -9,7 +9,6 @@ public class Overlay : MonoBehaviour
     private Animator animator;
 
     public bool hasBrick = false;
-    public bool viewHighlight = false;
     private Vector3 origin; 
 
     private void Awake() {
@@ -32,7 +31,7 @@ public class Overlay : MonoBehaviour
     private void OnMouseOver() {
         if (!gameManager.playing) return;
 
-        animator.SetBool("Highlight", true);
+        brickManager.SelectOverlay(transform.position);
 
         if (Input.GetMouseButtonDown(0)) {
             if (!hasBrick) {
@@ -44,9 +43,14 @@ public class Overlay : MonoBehaviour
         }
     }
 
-    private void OnMouseExit() {
-        animator.SetBool("Highlight", false);
+    public void ToggleHighlight(bool toggle) {
+        animator.SetBool("Highlight", toggle);
     }
+
+    //private void OnMouseExit() {
+    //    //brickManager.UnselectOverlay();
+    //    ToggleHighlight(false);
+    //}
 
     public void ClearOverlay() {
         hasBrick = false;

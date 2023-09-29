@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: d679351b133966a469d637651dff098e, type: 3}
+  m_Sprite: {fileID: 7482667652216324306, guid: 96cd09fe9b9316c439f9e00ec93690d2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.5019608}
   m_FlipX: 0
   m_FlipY: 0
@@ -100,7 +100,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasBrick: 0
-  viewHighlight: 0
 --- !u!61 &560291266161715781
 BoxCollider2D:
   m_ObjectHideFlags: 0

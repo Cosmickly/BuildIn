@@ -14,6 +14,7 @@ public class BrickManager : MonoBehaviour
     private Dictionary<Vector3, Brick> activeBricks = new();
     private Dictionary<Vector3, Brick> topBricks = new();
     private Dictionary<Vector3, Overlay> overlays = new();
+    private Overlay selectedOverlay;
     public string info;
 
     private List<Brick> brickStack = new();
@@ -49,7 +50,19 @@ public class BrickManager : MonoBehaviour
     }
 
     private void Update() {
-        info = "Active: " + activeBricks.Count + " top: " + topBricks.Count;
+        //info = "Selected: " + selectedOverlay.transform.localPosition.ToString();
+
+        if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+            SelectOverlay(selectedOverlay.transform.position - new Vector3(offset.x,0,0));
+        }
+
+        if (Input.GetKeyDown(KeyCode.RightArrow)) {
+            SelectOverlay(selectedOverlay.transform.position + new Vector3(offset.x, 0, 0));
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) && !selectedOverlay.hasBrick) {
+            selectedOverlay.hasBrick = AddTopBrick(selectedOverlay.transform.position);
+        }
     }
 
     // 0 = first
@@ -85,6 +98,22 @@ public class BrickManager : MonoBehaviour
         }
     }
 
+    public bool SelectOverlay(Vector3 pos) {
+        if(overlays.TryGetValue(pos, out Overlay newOverlay) && newOverlay != selectedOverlay) {
+            if (selectedOverlay) selectedOverlay.ToggleHighlight(false);
+            selectedOverlay = newOverlay;
+            selectedOverlay.ToggleHighlight(true);
+            return true;
+        }
+
+        return false;
+    }
+
+    //public void UnselectOverlay() {
+    //    selectedOverlay.toggleHighlight(false);
+    //    //selectedOverlay = null;
+    //}
+
     public bool AddTopBrick(Vector3 pos) {
         if (topBricks.ContainsKey(pos)) {
             return false;
@@ -119,7 +148,7 @@ public class BrickManager : MonoBehaviour
         }
 
         if (overlays.TryGetValue(pos, out Overlay overlay)) {
-            Debug.Log("Removing Overlay");
+            //Debug.Log("Removing Overlay");
             overlay.ClearOverlay();
         }
     }
@@ -180,12 +209,13 @@ public class BrickManager : MonoBehaviour
         newOverlay.transform.localScale = offset;
         newOverlay.transform.position = pos;
         overlays.Add(pos, newOverlay);
+        SelectOverlay(pos);
     }
 
     private bool CheckTopBricks(Vector3 pos) {
         bool removed = false;
         if (topBricks.TryGetValue(pos, out Brick brick)) {
-            Debug.Log("Checking");
+            //Debug.Log("Checking");
             if (topBricks.TryGetValue(pos + new Vector3(-offset.x,0,0), out Brick left) && left.spriteId == brick.spriteId) {
                 RemoveTopBrick(left.transform.position);
                 RemoveTopBrick(brick.transform.position);

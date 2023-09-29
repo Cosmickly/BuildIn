@@ -21,12 +21,12 @@ public class PaddleMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (pauseTimer <= 0) {
+        if (pauseTimer <= 0 && gameManager.playing) {
             ballDistance = ball.transform.position - transform.position;
 
             if (Mathf.Abs(ballDistance.magnitude) >= .75f) {
                 Vector3 newPosition = transform.position + (Vector3.right * ballDistance.x * maxSpeed * Time.deltaTime);
-                newPosition.x = Mathf.Clamp(newPosition.x, -3.5f, 3.5f);
+                newPosition.x = Mathf.Clamp(newPosition.x, -4.25f, 4.25f);
                 transform.position = newPosition;
             }
         }
