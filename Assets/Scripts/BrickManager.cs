@@ -21,7 +21,7 @@ public class BrickManager : MonoBehaviour
     private Brick heldBrick;
     public BrickHold brickHold;
 
-    public List<Sprite> colors = new(3);
+    public List<Sprite> brickSprites = new(3);
 
     private void OnValidate() {
         gridSize.x = Mathf.Clamp(gridSize.x, 0, 7);

@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteId: 0
+  breakEffect: {fileID: 4247600969492272560, guid: b1dabcdeb5bfbb849b26c3ae1dea4d83, type: 3}
 --- !u!61 &732609331207088457
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -7,16 +7,24 @@ public class Brick : MonoBehaviour
     private SpriteRenderer spriteRend;
     private BrickManager brickManager;
     public int spriteId;
+    public ParticleSystem breakEffect;
+
+    List<Color> colours = new() {
+            new Color32(255,0,77,255),
+            new Color32(41,173,255,255),
+            new Color32(255,236,39,255)
+    };
 
     private void Awake() {
         spriteRend = GetComponent<SpriteRenderer>();
     }
+
     // Start is called before the first frame update
     void Start()
     {
         brickManager = GetComponentInParent<BrickManager>();
-        spriteId = Random.Range(0, brickManager.colors.Count);
-        spriteRend.sprite = brickManager.colors[spriteId];
+        spriteId = Random.Range(0, brickManager.brickSprites.Count);
+        spriteRend.sprite = brickManager.brickSprites[spriteId];
     }
 
     // Update is called once per frame
@@ -28,6 +36,9 @@ public class Brick : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.CompareTag("Ball")) {
             brickManager.RemoveActiveBrick(transform.position);
+            var main = breakEffect.main;
+            main.startColor = new ParticleSystem.MinMaxGradient(colours[spriteId]);
+            Instantiate(breakEffect, transform.position, transform.rotation);
             Destroy(gameObject);
         }
     }
@@ -43,8 +54,4 @@ public class Brick : MonoBehaviour
     public void DestroySelf() {
         Destroy(gameObject);
     }
-
-    //public void Move(Vector3 distance) {
-    //    transform.position = transform.position + distance;
-    //}
 }

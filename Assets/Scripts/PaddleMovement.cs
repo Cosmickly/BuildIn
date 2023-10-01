@@ -10,12 +10,12 @@ public class PaddleMovement : MonoBehaviour
 
 
     private GameManager gameManager;
-    private BallMovement ball;
+    public BallMovement ball;
     private Vector3 ballDistance;
 
     private void Start() {
         gameManager = GetComponentInParent<GameManager>();
-        ball = gameManager.currentBall;
+        ball = gameManager.ball;
     }
 
     // Update is called once per frame

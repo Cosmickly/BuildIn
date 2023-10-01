@@ -6,7 +6,8 @@ public class BallMovement : MonoBehaviour
 {
     private Rigidbody2D rb;
     private Vector3 direction;
-    [SerializeField] private float speed;
+    public float startSpeed = 7;
+    private float speed;
 
     private void Awake() {
         rb = GetComponent<Rigidbody2D>();
@@ -15,8 +16,8 @@ public class BallMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        speed = startSpeed;
         direction = new Vector3(Random.Range(-1f,1f),-1,0);
-        //ballDistance = new Vector3(0,-1,0);
     }
 
     // Update is called once per frame
@@ -30,27 +31,23 @@ public class BallMovement : MonoBehaviour
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.gameObject.CompareTag("Boundary")) {
+            speed = startSpeed;
+            return;
+        }
 
-        // Get the new vector from the colliders normal
         Vector3 newDirection = Vector3.Reflect(direction, collision.GetContact(0).normal);
-        //Debug.Log("New ballDistance pre: " + newDirection);
 
-        // Set rotation and ballDistance
-
-        //if (collision.gameObject.CompareTag("Paddle")) {
-        //    Vector3 offset = transform.position - collision.gameObject.transform.position;
-        //    Debug.Log("offset:" + offset);
-        //    newDirection.x = Mathf.Clamp(offset.x/2 + newDirection.x, -1,1);
-        //    //newDirection /= Mathf.Max(newDirection.x, Mathf.Max(newDirection.y, newDirection.z));
-        //    Debug.Log("New ballDistance post: " + newDirection);
-
-        //}
-
-
-        //rb.SetRotation(Quaternion.LookRotation(Vector3.forward, newDirection));
-        //rb.velocity = newDirection;
+        if (collision.gameObject.CompareTag("Paddle")) {
+            Vector3 offset = transform.position - collision.transform.position;
+            newDirection += new Vector3(offset.x, 0, 0);
+        }
 
         direction = newDirection.normalized;
-        speed += 0.05f;
+        speed += 0.04f;
+    }
+
+    public void DestroyBall() {
+        Destroy(gameObject);
     }
 }

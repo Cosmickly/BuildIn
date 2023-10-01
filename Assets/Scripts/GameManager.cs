@@ -11,9 +11,8 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI endText;
     public GameObject restartButton;
 
-    public BallMovement ballPrefab;
-    public BallMovement currentBall;
-    public PaddleMovement paddlePrefab;
+    public BallMovement ball;
+    public PaddleMovement paddle;
 
     public bool playing = false;
 
@@ -46,17 +45,15 @@ public class GameManager : MonoBehaviour
     private void EndGame() {
         playing = false;
         endScreen.SetActive(true);
-        Destroy(currentBall);
+        ball.DestroyBall();
     }
-
     public void StartGame() {
         startScreen.SetActive(false);
         restartButton.SetActive(true);
-        currentBall = Instantiate(ballPrefab, transform);
-        ballPrefab.transform.position = new Vector3(0, -1, 0);
 
-        Instantiate(paddlePrefab, transform);
-        paddlePrefab.transform.position = new Vector3(0, -3.5f, 0);
+        ball = Instantiate(ball, new Vector3(0, -1, 0), transform.rotation, transform);
+        paddle = Instantiate(paddle, new Vector3(0, -3.5f, 0), transform.rotation, transform);
+
         playing = true;
     }
 
