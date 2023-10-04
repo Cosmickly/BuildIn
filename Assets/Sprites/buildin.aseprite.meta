@@ -95,7 +95,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638316134641346935
+  platformSettingsDirtyTick: 638320557831149292
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -600,6 +600,46 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
+  - name: buildin_23
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 36
+      y: 34
+      width: 16
+      height: 16
+    spriteID: 8f164ba6594c69d4db530027d5b18036
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: buildin_24
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 52
+      y: 34
+      width: 16
+      height: 16
+    spriteID: af13c489b07ff5a4bb3100254e80c478
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
   asepriteLayers:
   - layerIndex: 0
     guid: -1386095895
@@ -613,7 +653,7 @@ ScriptedImporter:
       cellRect:
         x: 0
         y: 2
-        width: 62
+        width: 64
         height: 46
       spriteId: 55ee4b19f6bb03b48b8ee09f4d50a673
     linkedCells: []

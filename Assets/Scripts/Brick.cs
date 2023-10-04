@@ -6,8 +6,9 @@ public class Brick : MonoBehaviour
 {
     private SpriteRenderer spriteRend;
     private BrickManager brickManager;
-    public int spriteId;
     public ParticleSystem breakEffect;
+    public int spriteId;
+    public bool touchingFloor = false;
 
     List<Color> colours = new() {
             new Color32(255,0,77,255),
@@ -35,11 +36,12 @@ public class Brick : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.CompareTag("Ball")) {
-            brickManager.RemoveActiveBrick(transform.position);
-            var main = breakEffect.main;
-            main.startColor = new ParticleSystem.MinMaxGradient(colours[spriteId]);
-            Instantiate(breakEffect, transform.position, transform.rotation);
-            Destroy(gameObject);
+            Break();
+        }
+
+        if (collision.gameObject.CompareTag("Boundary")) {
+            Debug.Log("Brick hit boundary");
+            Break();
         }
     }
 
@@ -51,7 +53,16 @@ public class Brick : MonoBehaviour
         }
     }
 
-    public void DestroySelf() {
+    public void DestroyBrick() {
         Destroy(gameObject);
     }
+
+    private void Break() {
+        brickManager.RemoveActiveBrick(transform.position);
+        var main = breakEffect.main;
+        main.startColor = new ParticleSystem.MinMaxGradient(colours[spriteId]);
+        Instantiate(breakEffect, transform.position, transform.rotation);
+        Destroy(gameObject);
+    } 
+
 }

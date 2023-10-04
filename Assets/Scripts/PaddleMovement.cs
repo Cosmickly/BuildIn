@@ -25,7 +25,7 @@ public class PaddleMovement : MonoBehaviour
             ballDistance = ball.transform.position - transform.position;
 
             if (Mathf.Abs(ballDistance.magnitude) >= .75f) {
-                Vector3 newPosition = transform.position + (Vector3.right * ballDistance.x * maxSpeed * Time.deltaTime);
+                Vector3 newPosition = transform.position + (ballDistance.x * maxSpeed * Time.deltaTime * Vector3.right);
                 newPosition.x = Mathf.Clamp(newPosition.x, -4.25f, 4.25f);
                 transform.position = newPosition;
             }
@@ -38,6 +38,11 @@ public class PaddleMovement : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.CompareTag("Ball")) {
             pauseTimer = pauseLength;
+        }
+
+        if (collision.gameObject.CompareTag("Brick")) {
+            Debug.Log("paddle hit brick");
+            gameManager.WinGame();
         }
     }
 }

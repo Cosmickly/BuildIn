@@ -18,8 +18,10 @@ public class BrickManager : MonoBehaviour
     public string info;
 
     private List<Brick> brickStack = new();
+    public float brickStackX = 7.5f;
     private Brick heldBrick;
-    public BrickHold brickHold;
+    private BrickHold brickHold;
+    public bool activeBrickHold;
 
     public List<Sprite> brickSprites = new(3);
 
@@ -34,6 +36,9 @@ public class BrickManager : MonoBehaviour
 
     // Start is called before the first frame update
     void Start() {
+        brickHold = GetComponentInChildren<BrickHold>();
+        brickHold.gameObject.SetActive(activeBrickHold);
+
         for (int i = 0; i < gridSize.x; i++) {
             CreateOverlay(transform.position + new Vector3((float)((gridSize.x - 1) * .5f - i) * offset.x, 0, 0));
 
@@ -44,7 +49,7 @@ public class BrickManager : MonoBehaviour
         }
 
         for (int i = 0; i < 5; i++) {
-            Brick newBrick = CreateBrick(transform.position + new Vector3(6.5f, -(i * offset.y)-1, 0));
+            Brick newBrick = CreateBrick(transform.position + new Vector3(brickStackX, -(i * offset.y)-1, 0));
             brickStack.Add(newBrick);
         }
     }
@@ -57,7 +62,7 @@ public class BrickManager : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.RightArrow)) {
-            SelectOverlay(selectedOverlay.transform.position + new Vector3(offset.x, 0, 0));
+            SelectOverlay(selectedOverlay.transform.position + new Vector3(offset.x,0,0));
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && !selectedOverlay.hasBrick) {
@@ -67,12 +72,12 @@ public class BrickManager : MonoBehaviour
 
     // 0 = first
     private void UpdateBrickStack() {
-        if (heldBrick) {
+        if (brickHold.enabled && heldBrick) {
             heldBrick.transform.position = brickHold.transform.position;
         }
 
         for (int i = 0; i < brickStack.Count; i++) {
-            brickStack[i].transform.position = transform.position + new Vector3(6.5f, -(i * offset.y)-1, 0);
+            brickStack[i].transform.position = transform.position + new Vector3(brickStackX, -(i * offset.y)-1, 0);
         }       
     }
 
@@ -98,15 +103,12 @@ public class BrickManager : MonoBehaviour
         }
     }
 
-    public bool SelectOverlay(Vector3 pos) {
+    public void SelectOverlay(Vector3 pos) {
         if(overlays.TryGetValue(pos, out Overlay newOverlay) && newOverlay != selectedOverlay) {
             if (selectedOverlay) selectedOverlay.ToggleHighlight(false);
             selectedOverlay = newOverlay;
             selectedOverlay.ToggleHighlight(true);
-            return true;
         }
-
-        return false;
     }
 
     //public void UnselectOverlay() {
@@ -126,7 +128,8 @@ public class BrickManager : MonoBehaviour
 
         brickStack.RemoveAt(0);
         brickStack.Add(CreateBrick(Vector3.zero));
-        brickHold.UsedHold(false);
+
+        if (brickHold.enabled) brickHold.UsedHold(false);
 
         UpdateBrickStack();
 
@@ -143,8 +146,8 @@ public class BrickManager : MonoBehaviour
 
     private void RemoveTopBrick(Vector3 pos) {
         if (topBricks.TryGetValue(pos, out Brick brick)) {
-            brick.DestroySelf();
             topBricks.Remove(pos);
+            brick.DestroyBrick();
         }
 
         if (overlays.TryGetValue(pos, out Overlay overlay)) {
@@ -166,7 +169,8 @@ public class BrickManager : MonoBehaviour
             brickStack.Add(CreateBrick(Vector3.zero));
         }
 
-        brickHold.UsedHold(true);
+        if (brickHold.enabled) brickHold.UsedHold(true);
+
         UpdateBrickStack();
     }
 
@@ -199,8 +203,9 @@ public class BrickManager : MonoBehaviour
             brick.transform.position += new Vector3(0,-1,0);
             brick.Activate(true);
             AddActiveBrick(brick);
-        }
 
+            if (brick.touchingFloor) gameManager.WinGame();
+        }
     }
 
     private void CreateOverlay(Vector3 pos) {

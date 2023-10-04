@@ -28,11 +28,13 @@ public class Overlay : MonoBehaviour
         transform.position = origin;
     }
 
-    private void OnMouseOver() {
+    private void OnMouseEnter() {
         if (!gameManager.playing) return;
 
         brickManager.SelectOverlay(transform.position);
+    }
 
+    private void OnMouseOver() {
         if (Input.GetMouseButtonDown(0)) {
             if (!hasBrick) {
                 hasBrick = brickManager.AddTopBrick(transform.position);
