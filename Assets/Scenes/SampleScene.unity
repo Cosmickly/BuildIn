@@ -4464,7 +4464,7 @@ MonoBehaviour:
   brickPrefab: {fileID: 7781043643926886004, guid: 0cae8bfd5462f18488115a0ae1e45652, type: 3}
   overlayPrefab: {fileID: 7621974946364210312, guid: c813093e21d72044695c99200e5ac39f, type: 3}
   offset: {x: 1, y: 0.5}
-  gridSize: {x: 1, y: 6}
+  gridSize: {x: 5, y: 5}
   info: 
   brickStackX: 7.5
   activeBrickHold: 0
@@ -4472,6 +4472,7 @@ MonoBehaviour:
   - {fileID: 8111009792517379744, guid: 84fed619589e4de4d9b3225588400e81, type: 3}
   - {fileID: 1716216696583859504, guid: 84fed619589e4de4d9b3225588400e81, type: 3}
   - {fileID: -2560703778198789032, guid: 84fed619589e4de4d9b3225588400e81, type: 3}
+  brickColours: []
 --- !u!4 &1313563720
 Transform:
   m_ObjectHideFlags: 0
@@ -4983,7 +4984,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1807284218
 RectTransform:
   m_ObjectHideFlags: 0

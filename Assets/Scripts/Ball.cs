@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BallMovement : MonoBehaviour
+public class Ball : MonoBehaviour
 {
     private Rigidbody2D rb;
     private Vector3 direction;

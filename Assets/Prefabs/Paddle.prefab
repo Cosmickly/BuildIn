@@ -49,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 10
   pauseLength: 0.1
-  ball: {fileID: 0}
+  breakEffect: {fileID: 4247600969492272560, guid: b1dabcdeb5bfbb849b26c3ae1dea4d83, type: 3}
 --- !u!50 &-1160001810340970257
 Rigidbody2D:
   serializedVersion: 4

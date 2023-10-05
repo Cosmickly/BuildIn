@@ -10,12 +10,6 @@ public class Brick : MonoBehaviour
     public int spriteId;
     public bool touchingFloor = false;
 
-    List<Color> colours = new() {
-            new Color32(255,0,77,255),
-            new Color32(41,173,255,255),
-            new Color32(255,236,39,255)
-    };
-
     private void Awake() {
         spriteRend = GetComponent<SpriteRenderer>();
     }
@@ -60,7 +54,7 @@ public class Brick : MonoBehaviour
     private void Break() {
         brickManager.RemoveActiveBrick(transform.position);
         var main = breakEffect.main;
-        main.startColor = new ParticleSystem.MinMaxGradient(colours[spriteId]);
+        main.startColor = new ParticleSystem.MinMaxGradient(brickManager.brickColours[spriteId]);
         Instantiate(breakEffect, transform.position, transform.rotation);
         Destroy(gameObject);
     } 

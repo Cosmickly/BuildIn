@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PaddleMovement : MonoBehaviour
+public class Paddle : MonoBehaviour
 {
     [SerializeField] private float maxSpeed = 5f;
     [SerializeField] private float pauseLength = 0.1f;
     private float pauseTimer = 0;
 
-
     private GameManager gameManager;
-    public BallMovement ball;
-    private Vector3 ballDistance;
+    private Ball ball;
+
+    public ParticleSystem breakEffect;
 
     private void Start() {
         gameManager = GetComponentInParent<GameManager>();
@@ -22,7 +22,7 @@ public class PaddleMovement : MonoBehaviour
     void Update()
     {
         if (pauseTimer <= 0 && gameManager.playing) {
-            ballDistance = ball.transform.position - transform.position;
+            Vector3 ballDistance = ball.transform.position - transform.position;
 
             if (Mathf.Abs(ballDistance.magnitude) >= .75f) {
                 Vector3 newPosition = transform.position + (ballDistance.x * maxSpeed * Time.deltaTime * Vector3.right);
@@ -44,5 +44,12 @@ public class PaddleMovement : MonoBehaviour
             Debug.Log("paddle hit brick");
             gameManager.WinGame();
         }
+    }
+
+    public void BreakPaddle() {
+        var main = breakEffect.main;
+        main.startColor = new ParticleSystem.MinMaxGradient(gameManager.pico8Palette["lavender"]);
+        Instantiate(breakEffect, transform.position, transform.rotation);
+        Destroy(gameObject);
     }
 }

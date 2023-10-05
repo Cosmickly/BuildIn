@@ -24,6 +24,7 @@ public class BrickManager : MonoBehaviour
     public bool activeBrickHold;
 
     public List<Sprite> brickSprites = new(3);
+    public List<Color> brickColours = new();
 
     private void OnValidate() {
         gridSize.x = Mathf.Clamp(gridSize.x, 0, 7);
@@ -36,6 +37,10 @@ public class BrickManager : MonoBehaviour
 
     // Start is called before the first frame update
     void Start() {
+        brickColours.Add(gameManager.pico8Palette["red"]);
+        brickColours.Add(gameManager.pico8Palette["blue"]);
+        brickColours.Add(gameManager.pico8Palette["yellow"]);
+
         brickHold = GetComponentInChildren<BrickHold>();
         brickHold.gameObject.SetActive(activeBrickHold);
 
