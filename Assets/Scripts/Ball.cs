@@ -17,7 +17,7 @@ public class Ball : MonoBehaviour
     void Start()
     {
         speed = startSpeed;
-        direction = new Vector3(Random.Range(-1f,1f),-1,0);
+        RandomDirection();
     }
 
     // Update is called once per frame
@@ -49,5 +49,9 @@ public class Ball : MonoBehaviour
 
     public void DestroyBall() {
         Destroy(gameObject);
+    }
+
+    public void RandomDirection() {
+        direction = new Vector3(Random.Range(-1f, 1f), -1, 0);
     }
 }

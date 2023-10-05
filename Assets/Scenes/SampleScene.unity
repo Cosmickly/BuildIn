@@ -1346,7 +1346,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 1937779167}
-  respawnPoint: {x: 0, y: 0, z: 0}
 --- !u!1 &23022817
 GameObject:
   m_ObjectHideFlags: 0
@@ -1573,7 +1572,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 0}
-  respawnPoint: {x: 0, y: -1, z: 0}
 --- !u!212 &104748496
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -7099,8 +7097,10 @@ MonoBehaviour:
   endScreen: {fileID: 1375058560}
   endText: {fileID: 233672656}
   restartButton: {fileID: 1710385244}
+  ballRespawn: {x: 0, y: 0, z: 0}
   ball: {fileID: 283450328590932311, guid: a08bcfa1097b67547a67441616758f9b, type: 3}
   paddle: {fileID: 3106949170610133777, guid: 947e861df4d4e9742990ebc6be5c112d, type: 3}
+  paddleSpeed: 0
   playing: 0
 --- !u!4 &1937779168
 Transform:

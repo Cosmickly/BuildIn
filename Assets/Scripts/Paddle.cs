@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Paddle : MonoBehaviour
 {
-    [SerializeField] private float maxSpeed = 5f;
+    [SerializeField] private float maxSpeed;
     [SerializeField] private float pauseLength = 0.1f;
     private float pauseTimer = 0;
 
@@ -15,6 +15,7 @@ public class Paddle : MonoBehaviour
 
     private void Start() {
         gameManager = GetComponentInParent<GameManager>();
+        maxSpeed = gameManager.paddleSpeed;
         ball = gameManager.ball;
     }
 
@@ -41,7 +42,6 @@ public class Paddle : MonoBehaviour
         }
 
         if (collision.gameObject.CompareTag("Brick")) {
-            Debug.Log("paddle hit brick");
             gameManager.WinGame();
         }
     }

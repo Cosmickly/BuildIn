@@ -63,11 +63,12 @@ public class BrickManager : MonoBehaviour
         //info = "Selected: " + selectedOverlay.transform.localPosition.ToString();
 
         if (Input.GetKeyDown(KeyCode.LeftArrow)) {
-            SelectOverlay(selectedOverlay.transform.position - new Vector3(offset.x,0,0));
+
+            CycleOverlay(new Vector3(-offset.x,0,0));
         }
 
         if (Input.GetKeyDown(KeyCode.RightArrow)) {
-            SelectOverlay(selectedOverlay.transform.position + new Vector3(offset.x,0,0));
+            CycleOverlay(new Vector3(offset.x, 0, 0));
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && !selectedOverlay.hasBrick) {
@@ -108,18 +109,26 @@ public class BrickManager : MonoBehaviour
         }
     }
 
-    public void SelectOverlay(Vector3 pos) {
-        if(overlays.TryGetValue(pos, out Overlay newOverlay) && newOverlay != selectedOverlay) {
-            if (selectedOverlay) selectedOverlay.ToggleHighlight(false);
-            selectedOverlay = newOverlay;
-            selectedOverlay.ToggleHighlight(true);
-        }
+    public void SelectOverlay(Overlay newOverlay) {
+        if (selectedOverlay) selectedOverlay.ToggleHighlight(false);
+        selectedOverlay = newOverlay;
+        selectedOverlay.ToggleHighlight(true);
     }
 
-    //public void UnselectOverlay() {
-    //    selectedOverlay.toggleHighlight(false);
-    //    //selectedOverlay = null;
-    //}
+    private void CycleOverlay(Vector3 overlayOffset) {
+        Vector3 pos = selectedOverlay.transform.position;
+        pos += overlayOffset;
+
+        while (overlays.TryGetValue(pos, out Overlay newOverlay)) {
+            Debug.Log("Trying overlay " + pos.ToString());
+
+            if (newOverlay != selectedOverlay && !newOverlay.hasBrick) { 
+                SelectOverlay(newOverlay);
+                return;
+            }
+            pos += overlayOffset;
+        }
+    }
 
     public bool AddTopBrick(Vector3 pos) {
         if (topBricks.ContainsKey(pos)) {
@@ -219,7 +228,7 @@ public class BrickManager : MonoBehaviour
         newOverlay.transform.localScale = offset;
         newOverlay.transform.position = pos;
         overlays.Add(pos, newOverlay);
-        SelectOverlay(pos);
+        SelectOverlay(newOverlay);
     }
 
     private bool CheckTopBricks(Vector3 pos) {

@@ -31,7 +31,7 @@ public class Overlay : MonoBehaviour
     private void OnMouseEnter() {
         if (!gameManager.playing) return;
 
-        brickManager.SelectOverlay(transform.position);
+        brickManager.SelectOverlay(this);
     }
 
     private void OnMouseOver() {
@@ -48,11 +48,6 @@ public class Overlay : MonoBehaviour
     public void ToggleHighlight(bool toggle) {
         animator.SetBool("Highlight", toggle);
     }
-
-    //private void OnMouseExit() {
-    //    //brickManager.UnselectOverlay();
-    //    ToggleHighlight(false);
-    //}
 
     public void ClearOverlay() {
         hasBrick = false;

@@ -11,8 +11,10 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI endText;
     public GameObject restartButton;
 
+    public Vector3 ballRespawn;
     public Ball ball;
     public Paddle paddle;
+    public float paddleSpeed;
 
     public bool playing = false;
 
@@ -76,6 +78,14 @@ public class GameManager : MonoBehaviour
         paddle = Instantiate(paddle, new Vector3(0, -3.5f, 0), transform.rotation, transform);
 
         playing = true;
+    }
+
+    public IEnumerator RespawnBall() {
+        ball.gameObject.SetActive(false);
+        yield return new WaitForSeconds(2);
+        ball.gameObject.transform.position = ballRespawn;
+        ball.RandomDirection();
+        ball.gameObject.SetActive(true);
     }
 
     public void Restart() {
