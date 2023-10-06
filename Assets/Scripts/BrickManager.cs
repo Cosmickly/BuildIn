@@ -19,6 +19,8 @@ public class BrickManager : MonoBehaviour
 
     private List<Brick> brickStack = new();
     public float brickStackX = 7.5f;
+    public float brickStackSize = 2;
+
     private Brick heldBrick;
     private BrickHold brickHold;
     public bool activeBrickHold;
@@ -48,14 +50,12 @@ public class BrickManager : MonoBehaviour
             CreateOverlay(transform.position + new Vector3((float)((gridSize.x - 1) * .5f - i) * offset.x, 0, 0));
 
             for (int j = 0; j < gridSize.y; j++) {
-                Brick newBrick = CreateBrick(transform.position + new Vector3((float)((gridSize.x - 1) * .5f - i) * offset.x, -(j * offset.y) - 1, 0));
-                AddActiveBrick(newBrick);
+                AddActiveBrick(CreateBrick(transform.position + new Vector3((float)((gridSize.x - 1) * .5f - i) * offset.x, -(j * offset.y) - 1, 0), 1));
             }
         }
 
         for (int i = 0; i < 5; i++) {
-            Brick newBrick = CreateBrick(transform.position + new Vector3(brickStackX, -(i * offset.y)-1, 0));
-            brickStack.Add(newBrick);
+            brickStack.Add(CreateBrick(transform.position + new Vector3(brickStackX, -(i * brickStackSize * offset.y) - 1, 0), brickStackSize));
         }
     }
 
@@ -83,12 +83,13 @@ public class BrickManager : MonoBehaviour
         }
 
         for (int i = 0; i < brickStack.Count; i++) {
-            brickStack[i].transform.position = transform.position + new Vector3(brickStackX, -(i * offset.y)-1, 0);
+            brickStack[i].transform.position = transform.position + new Vector3(brickStackX, -(i * brickStackSize * offset.y) - 1, 0);
         }       
     }
 
-    private Brick CreateBrick(Vector3 pos) {
+    private Brick CreateBrick(Vector3 pos, float sizeMultiplier) {
         Brick newBrick = Instantiate(brickPrefab, transform);
+        newBrick.transform.localScale *= sizeMultiplier;
         newBrick.transform.position = pos;
         return newBrick;
     }
@@ -137,11 +138,12 @@ public class BrickManager : MonoBehaviour
 
         Brick newBrick = brickStack[0];
         newBrick.transform.position = pos;
+        newBrick.transform.localScale = new Vector3(1, 1, 0);
         newBrick.Activate(false);
         topBricks.Add(pos, newBrick);
 
         brickStack.RemoveAt(0);
-        brickStack.Add(CreateBrick(Vector3.zero));
+        brickStack.Add(CreateBrick(Vector3.zero, brickStackSize));
 
         if (brickHold.enabled) brickHold.UsedHold(false);
 
@@ -180,7 +182,7 @@ public class BrickManager : MonoBehaviour
         else {
             heldBrick = brickStack[0];
             brickStack.RemoveAt(0);
-            brickStack.Add(CreateBrick(Vector3.zero));
+            brickStack.Add(CreateBrick(Vector3.zero, brickStackSize));
         }
 
         if (brickHold.enabled) brickHold.UsedHold(true);
