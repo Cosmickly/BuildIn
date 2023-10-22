@@ -148,7 +148,7 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 4
-      y: 34
+      y: 50
       width: 16
       height: 16
     spriteID: e019f515e0158a546a582926e3baa528
@@ -168,7 +168,7 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 20
-      y: 44
+      y: 60
       width: 6
       height: 6
     spriteID: cd13b7a982518ca48bf75dfb0adad791
@@ -188,7 +188,7 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 20
-      y: 38
+      y: 54
       width: 6
       height: 6
     spriteID: c297dca796ad3004bb1e14ef5d5b8a96
@@ -608,7 +608,7 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 36
-      y: 34
+      y: 50
       width: 16
       height: 16
     spriteID: 8f164ba6594c69d4db530027d5b18036
@@ -627,11 +627,71 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 52
+      x: 4
       y: 34
       width: 16
       height: 16
     spriteID: af13c489b07ff5a4bb3100254e80c478
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: buildin_25
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 20
+      y: 34
+      width: 16
+      height: 16
+    spriteID: 433cbbf36b081a7429616cce31eaf507
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: buildin_26
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 36
+      y: 34
+      width: 16
+      height: 16
+    spriteID: 34fb67866f9fb224eb61b0ffedc82f27
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: buildin_27
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 52
+      y: 34
+      width: 16
+      height: 16
+    spriteID: 2910c9379fa297e4b8986372430a0fcc
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -654,7 +714,7 @@ ScriptedImporter:
         x: 0
         y: 2
         width: 64
-        height: 46
+        height: 62
       spriteId: 55ee4b19f6bb03b48b8ee09f4d50a673
     linkedCells: []
     parentIndex: -1
@@ -709,4 +769,4 @@ ScriptedImporter:
     androidETC2FallbackOverride: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 64, y: 48}
+  canvasSize: {x: 64, y: 64}

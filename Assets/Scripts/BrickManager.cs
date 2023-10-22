@@ -18,8 +18,9 @@ public class BrickManager : MonoBehaviour
     public string info;
 
     private List<Brick> brickStack = new();
-    public float brickStackX = 7.5f;
+    public Vector3 brickStackPos = new Vector3(7.5f,-2,0);
     public float brickStackSize = 2;
+    public int brickStackCount = 5;
 
     private Brick heldBrick;
     private BrickHold brickHold;
@@ -54,8 +55,9 @@ public class BrickManager : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < 5; i++) {
-            brickStack.Add(CreateBrick(transform.position + new Vector3(brickStackX, -(i * brickStackSize * offset.y) - 1, 0), brickStackSize));
+        for (int i = 0; i < brickStackCount; i++) {
+            //brickStack.Add(CreateBrick(transform.position + new Vector3(brickStackX, -(i * brickStackSize * offset.y) - 1, 0), brickStackSize));
+            brickStack.Add(CreateBrick(transform.position + brickStackPos + new Vector3(0, -i * brickStackSize * offset.y, 0), brickStackSize));
         }
     }
 
@@ -83,7 +85,8 @@ public class BrickManager : MonoBehaviour
         }
 
         for (int i = 0; i < brickStack.Count; i++) {
-            brickStack[i].transform.position = transform.position + new Vector3(brickStackX, -(i * brickStackSize * offset.y) - 1, 0);
+            //brickStack[i].transform.position = transform.position + new Vector3(brickStackX, -(i * brickStackSize * offset.y) - 1, 0);
+            brickStack[i].transform.position = transform.position + brickStackPos + new Vector3(0, -i * brickStackSize * offset.y, 0);
         }       
     }
 
@@ -172,6 +175,7 @@ public class BrickManager : MonoBehaviour
         }
     }
 
+    //TODO: Unsupported
     public void HoldBrick() {
         if (heldBrick) {
             var tempBrick = heldBrick;
