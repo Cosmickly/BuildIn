@@ -19,8 +19,8 @@ public class BrickManager : MonoBehaviour
 
     private List<Brick> brickStack = new();
     public Vector3 brickStackPos = new Vector3(7.5f,-2,0);
-    public float brickStackSize = 2;
-    public int brickStackCount = 5;
+    public float brickStackSize = 1; //physical size of stack
+    public int brickStackCount = 5; //number of bricks in stack
 
     private Brick heldBrick;
     private BrickHold brickHold;

@@ -4389,7 +4389,7 @@ MonoBehaviour:
   gridSize: {x: 5, y: 5}
   info: 
   brickStackPos: {x: 7, y: -2, z: 0}
-  brickStackSize: 2
+  brickStackSize: 1
   brickStackCount: 4
   activeBrickHold: 0
   brickSprites:
