@@ -44,7 +44,7 @@ public class BrickManager : MonoBehaviour
         brickColours.Add(gameManager.pico8Palette["blue"]);
         brickColours.Add(gameManager.pico8Palette["yellow"]);
 
-        brickHold = GetComponentInChildren<BrickHold>();
+        brickHold = GetComponentInChildren<BrickHold>(true);
         brickHold.gameObject.SetActive(activeBrickHold);
 
         for (int i = 0; i < gridSize.x; i++) {
@@ -56,7 +56,6 @@ public class BrickManager : MonoBehaviour
         }
 
         for (int i = 0; i < brickStackCount; i++) {
-            //brickStack.Add(CreateBrick(transform.position + new Vector3(brickStackX, -(i * brickStackSize * offset.y) - 1, 0), brickStackSize));
             brickStack.Add(CreateBrick(transform.position + brickStackPos + new Vector3(0, -i * brickStackSize * offset.y, 0), brickStackSize));
         }
     }
