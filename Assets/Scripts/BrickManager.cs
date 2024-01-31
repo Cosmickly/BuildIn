@@ -62,19 +62,19 @@ public class BrickManager : MonoBehaviour
 
     private void Update() {
         //info = "Selected: " + selectedOverlay.transform.localPosition.ToString();
+        if (gameManager.playing) {
+            if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+                CycleOverlay(new Vector3(-offset.x,0,0));
+            }
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+            if (Input.GetKeyDown(KeyCode.RightArrow)) {
+                CycleOverlay(new Vector3(offset.x, 0, 0));
+            }
 
-            CycleOverlay(new Vector3(-offset.x,0,0));
-        }
-
-        if (Input.GetKeyDown(KeyCode.RightArrow)) {
-            CycleOverlay(new Vector3(offset.x, 0, 0));
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space) && !selectedOverlay.hasBrick) {
-            selectedOverlay.hasBrick = AddTopBrick(selectedOverlay.transform.position);
-        }
+            if (Input.GetKeyDown(KeyCode.Space) && !selectedOverlay.hasBrick) {
+                selectedOverlay.hasBrick = AddTopBrick(selectedOverlay.transform.position);
+            }                
+        }            
     }
 
     // 0 = first

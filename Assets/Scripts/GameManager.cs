@@ -44,12 +44,14 @@ public class GameManager : MonoBehaviour
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.Escape)){
-            Application.Quit();
-        }
+        if (playing) {
+            if (Input.GetKeyDown(KeyCode.Escape)){
+                Application.Quit();
+            }
 
-        if (Input.GetKeyDown(KeyCode.R) && playing) {
-            Restart();
+            if (Input.GetKeyDown(KeyCode.R)) {
+                Restart();
+            }
         }
     }
 
