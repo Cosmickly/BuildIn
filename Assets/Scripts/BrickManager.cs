@@ -30,7 +30,7 @@ public class BrickManager : MonoBehaviour
     public List<Color> brickColours = new();
 
     private void OnValidate() {
-        gridSize.x = Mathf.Clamp(gridSize.x, 0, 7);
+        gridSize.x = Mathf.Clamp(gridSize.x, 0, 8);
         gridSize.y = Mathf.Clamp(gridSize.y, 0, 6);
     }
 
