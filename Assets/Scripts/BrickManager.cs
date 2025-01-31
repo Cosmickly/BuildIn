@@ -1,252 +1,290 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BrickManager : MonoBehaviour
 {
-    public GameManager gameManager;
+    public GameManager GameManager;
 
-    public Brick brickPrefab;
-    public Overlay overlayPrefab;
-    public Vector2 offset;
-    public Vector2Int gridSize;
+    [SerializeField] private Brick _brickPrefab;
+    [SerializeField] private Overlay _overlayPrefab;
+    [SerializeField] private Vector2 _offset = new(1, 0.5f);
+    [SerializeField] private Vector2Int _gridSize = new(5, 4);
 
-    private Dictionary<Vector3, Brick> activeBricks = new();
-    private Dictionary<Vector3, Brick> topBricks = new();
-    private Dictionary<Vector3, Overlay> overlays = new();
-    private Overlay selectedOverlay;
-    public string info;
+    private readonly Dictionary<Vector3, Brick> _activeBricks = new();
+    private readonly Dictionary<Vector3, Brick> _topBricks = new();
+    private readonly Dictionary<Vector3, Overlay> _overlays = new();
+    private Overlay _selectedOverlay;
 
-    private List<Brick> brickStack = new();
-    public Vector3 brickStackPos = new Vector3(7.5f,-2,0);
-    public float brickStackSize = 1; //physical size of stack
-    public int brickStackCount = 5; //number of bricks in stack
+    private readonly List<Brick> _brickStack = new();
+    [SerializeField] private Vector3 _brickStackPos = new(7, -1, 0);
+    [SerializeField] private float _brickStackSize = 1; //physical size of stack
+    [SerializeField] private int _brickStackCount = 5; //number of bricks in stack
 
-    private Brick heldBrick;
-    private BrickHold brickHold;
-    public bool activeBrickHold;
+    private Brick _heldBrick;
+    private BrickHold _brickHold;
 
-    public List<Sprite> brickSprites = new(3);
-    public List<Color> brickColours = new();
+    public List<Sprite> BrickSprites = new(3);
+    public readonly List<Color> BrickColours = new()
+    {
+        new Color32(255, 0, 77, 255),
+        new Color32(41, 173, 255, 255),
+        new Color32(255, 236, 39, 255)
+    };
 
-    private void OnValidate() {
-        gridSize.x = Mathf.Clamp(gridSize.x, 0, 8);
-        gridSize.y = Mathf.Clamp(gridSize.y, 0, 6);
-    }
-
-    private void Awake() {
-        
+    private void OnValidate()
+    {
+        _gridSize.x = Mathf.Clamp(_gridSize.x, 0, 8);
+        _gridSize.y = Mathf.Clamp(_gridSize.y, 0, 6);
     }
 
     // Start is called before the first frame update
-    void Start() {
-        brickColours.Add(gameManager.pico8Palette["red"]);
-        brickColours.Add(gameManager.pico8Palette["blue"]);
-        brickColours.Add(gameManager.pico8Palette["yellow"]);
+    private void Start()
+    {
+        _brickHold = GetComponentInChildren<BrickHold>(true);
 
-        brickHold = GetComponentInChildren<BrickHold>(true);
-        brickHold.gameObject.SetActive(activeBrickHold);
+        for (int i = 0; i < _gridSize.x; i++)
+        {
+            CreateOverlay(transform.position + new Vector3(((_gridSize.x - 1) * .5f - i) * _offset.x, 0, 0));
 
-        for (int i = 0; i < gridSize.x; i++) {
-            CreateOverlay(transform.position + new Vector3((float)((gridSize.x - 1) * .5f - i) * offset.x, 0, 0));
-
-            for (int j = 0; j < gridSize.y; j++) {
-                AddActiveBrick(CreateBrick(transform.position + new Vector3((float)((gridSize.x - 1) * .5f - i) * offset.x, -(j * offset.y) - 1, 0), 1));
+            for (int j = 0; j < _gridSize.y; j++)
+            {
+                AddActiveBrick(CreateBrick(transform.position + new Vector3(((_gridSize.x - 1) * .5f - i) * _offset.x, -(j * _offset.y) - 1, 0), 1));
             }
         }
 
-        for (int i = 0; i < brickStackCount; i++) {
-            brickStack.Add(CreateBrick(transform.position + brickStackPos + new Vector3(0, -i * brickStackSize * offset.y, 0), brickStackSize));
+        for (int i = 0; i < _brickStackCount; i++)
+        {
+            _brickStack.Add(CreateBrick(transform.position + _brickStackPos + new Vector3(0, -i * _brickStackSize * _offset.y, 0), _brickStackSize));
         }
     }
 
-    private void Update() {
-        //info = "Selected: " + selectedOverlay.transform.localPosition.ToString();
-        if (gameManager.playing) {
-            if (Input.GetKeyDown(KeyCode.LeftArrow)) {
-                CycleOverlay(new Vector3(-offset.x,0,0));
-            }
+    private void Update()
+    {
+        if (!GameManager.Playing) return;
 
-            if (Input.GetKeyDown(KeyCode.RightArrow)) {
-                CycleOverlay(new Vector3(offset.x, 0, 0));
-            }
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            CycleOverlay(new Vector3(-_offset.x,0,0));
+        }
 
-            if (Input.GetKeyDown(KeyCode.Space) && !selectedOverlay.hasBrick) {
-                selectedOverlay.hasBrick = AddTopBrick(selectedOverlay.transform.position);
-            }                
-        }            
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            CycleOverlay(new Vector3(_offset.x, 0, 0));
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) && !_selectedOverlay.HasBrick)
+        {
+            _selectedOverlay.HasBrick = AddTopBrick(_selectedOverlay.transform.position);
+        }
     }
 
     // 0 = first
-    private void UpdateBrickStack() {
-        if (brickHold.enabled && heldBrick) {
-            heldBrick.transform.position = brickHold.transform.position;
+    private void UpdateBrickStack()
+    {
+        if (_brickHold.isActiveAndEnabled && _heldBrick)
+        {
+            _heldBrick.transform.position = _brickHold.transform.position;
         }
 
-        for (int i = 0; i < brickStack.Count; i++) {
+        for (int i = 0; i < _brickStack.Count; i++)
+        {
             //brickStack[i].transform.position = transform.position + new Vector3(brickStackX, -(i * brickStackSize * offset.y) - 1, 0);
-            brickStack[i].transform.position = transform.position + brickStackPos + new Vector3(0, -i * brickStackSize * offset.y, 0);
-        }       
+            _brickStack[i].transform.position = transform.position + _brickStackPos + new Vector3(0, -i * _brickStackSize * _offset.y, 0);
+        }
     }
 
-    private Brick CreateBrick(Vector3 pos, float sizeMultiplier) {
-        Brick newBrick = Instantiate(brickPrefab, transform);
+    private Brick CreateBrick(Vector3 pos, float sizeMultiplier)
+    {
+        Brick newBrick = Instantiate(_brickPrefab, transform);
         newBrick.transform.localScale *= sizeMultiplier;
         newBrick.transform.position = pos;
         return newBrick;
     }
 
-    public void AddActiveBrick(Brick brick) {
-        if (!activeBricks.ContainsKey(brick.transform.position)) {
-            activeBricks.Add(brick.transform.position, brick);
+    private void AddActiveBrick(Brick brick)
+    {
+        _activeBricks.TryAdd(brick.transform.position, brick);
+    }
+
+    public void RemoveActiveBrick(Vector3 pos)
+    {
+        if (_activeBricks.ContainsKey(pos))
+        {
+            _activeBricks.Remove(pos);
+        }
+
+        if (_activeBricks.Count == 0)
+        {
+            GameManager.LoseGame();
         }
     }
 
-    public void RemoveActiveBrick(Vector3 pos) {
-        if (activeBricks.ContainsKey(pos)) {
-            activeBricks.Remove(pos);
-        }
-
-        if (activeBricks.Count == 0) {
-            gameManager.LoseGame();
-        }
+    public void SelectOverlay(Overlay newOverlay)
+    {
+        if (_selectedOverlay) _selectedOverlay.ToggleHighlight(false);
+        _selectedOverlay = newOverlay;
+        _selectedOverlay.ToggleHighlight(true);
     }
 
-    public void SelectOverlay(Overlay newOverlay) {
-        if (selectedOverlay) selectedOverlay.ToggleHighlight(false);
-        selectedOverlay = newOverlay;
-        selectedOverlay.ToggleHighlight(true);
-    }
-
-    private void CycleOverlay(Vector3 overlayOffset) {
-        Vector3 pos = selectedOverlay.transform.position;
+    private void CycleOverlay(Vector3 overlayOffset)
+    {
+        Vector3 pos = _selectedOverlay.transform.position;
         pos += overlayOffset;
 
-        while (overlays.TryGetValue(pos, out Overlay newOverlay)) {
-            Debug.Log("Trying overlay " + pos.ToString());
-
-            if (newOverlay != selectedOverlay && !newOverlay.hasBrick) { 
+        while (_overlays.TryGetValue(pos, out Overlay newOverlay))
+        {
+            if (newOverlay != _selectedOverlay && !newOverlay.HasBrick)
+            {
                 SelectOverlay(newOverlay);
                 return;
             }
+
             pos += overlayOffset;
         }
     }
 
-    public bool AddTopBrick(Vector3 pos) {
-        if (topBricks.ContainsKey(pos)) {
+    public bool AddTopBrick(Vector3 pos)
+    {
+        if (_topBricks.ContainsKey(pos))
+        {
             return false;
         }
 
-        Brick newBrick = brickStack[0];
+        Brick newBrick = _brickStack[0];
         newBrick.transform.position = pos;
         newBrick.transform.localScale = new Vector3(1, 1, 0);
         newBrick.Activate(false);
-        topBricks.Add(pos, newBrick);
+        _topBricks.Add(pos, newBrick);
 
-        brickStack.RemoveAt(0);
-        brickStack.Add(CreateBrick(Vector3.zero, brickStackSize));
+        _brickStack.RemoveAt(0);
+        _brickStack.Add(CreateBrick(Vector3.zero, _brickStackSize));
 
-        if (brickHold.enabled) brickHold.UsedHold(false);
+        if (_brickHold.isActiveAndEnabled)
+        {
+            _brickHold.UsedHold(false);
+        }
 
         UpdateBrickStack();
 
-        if (CheckTopBricks(pos)) {
+        if (CheckTopBricks(pos))
+        {
             return false;
         }
 
-        if (topBricks.Count == gridSize.x) {
+        if (_topBricks.Count == _gridSize.x)
+        {
             ShiftRow();
             return false;
         }
+
         return true;
     }
 
-    private void RemoveTopBrick(Vector3 pos) {
-        if (topBricks.TryGetValue(pos, out Brick brick)) {
-            topBricks.Remove(pos);
+    private void RemoveTopBrick(Vector3 pos)
+    {
+        if (_topBricks.Remove(pos, out Brick brick))
+        {
             brick.DestroyBrick();
         }
 
-        if (overlays.TryGetValue(pos, out Overlay overlay)) {
-            //Debug.Log("Removing Overlay");
+        if (_overlays.TryGetValue(pos, out Overlay overlay))
+        {
             overlay.ClearOverlay();
         }
     }
 
     //TODO: Unsupported
-    public void HoldBrick() {
-        if (heldBrick) {
-            var tempBrick = heldBrick;
-            heldBrick = brickStack[0];
-            brickStack.RemoveAt(0);
-            brickStack.Insert(0, tempBrick);
+    public void HoldBrick()
+    {
+        if (!_brickHold.isActiveAndEnabled) return;
+
+        if (_heldBrick)
+        {
+            var tempBrick = _heldBrick;
+            _heldBrick = _brickStack[0];
+            _brickStack.RemoveAt(0);
+            _brickStack.Insert(0, tempBrick);
         }
-        else {
-            heldBrick = brickStack[0];
-            brickStack.RemoveAt(0);
-            brickStack.Add(CreateBrick(Vector3.zero, brickStackSize));
+        else
+        {
+            _heldBrick = _brickStack[0];
+            _brickStack.RemoveAt(0);
+            _brickStack.Add(CreateBrick(Vector3.zero, _brickStackSize));
         }
 
-        if (brickHold.enabled) brickHold.UsedHold(true);
+        _brickHold.UsedHold(true);
 
         UpdateBrickStack();
     }
 
-    public void ShiftRow() {
-        foreach (var overlay in overlays) {
+    private void ShiftRow()
+    {
+        foreach (var overlay in _overlays)
+        {
             overlay.Value.ClearOverlay();
         }
 
         // Move active bricks to temp
         List<Brick> temp = new();
 
-        foreach (var brick in activeBricks) {
+        foreach (var brick in _activeBricks)
+        {
             temp.Add(brick.Value);
         }
-        activeBricks.Clear();
 
-        foreach (Brick brick in temp) {
-            brick.transform.position += new Vector3(0, -offset.y, 0);
+        _activeBricks.Clear();
+
+        foreach (Brick brick in temp)
+        {
+            brick.transform.position += new Vector3(0, -_offset.y, 0);
             AddActiveBrick(brick);
         }
+
         temp.Clear();
 
         // Move top bricks
-        foreach (var brick in topBricks) {
-            temp.Add(brick.Value);
-        }
-        topBricks.Clear();
+        temp.AddRange(_topBricks.Select(brick => brick.Value));
 
-        foreach (Brick brick in temp) {
-            brick.transform.position += new Vector3(0,-1,0);
+        _topBricks.Clear();
+
+        foreach (Brick brick in temp)
+        {
+            brick.transform.position += new Vector3(0, -1, 0);
             brick.Activate(true);
             AddActiveBrick(brick);
 
-            if (brick.touchingFloor) gameManager.WinGame();
+            if (brick.TouchingFloor) GameManager.WinGame();
         }
     }
 
-    private void CreateOverlay(Vector3 pos) {
-        //Debug.Log("Creating overlay at " + pos);
-        Overlay newOverlay = Instantiate(overlayPrefab, transform);
-        newOverlay.transform.localScale = offset;
+    private void CreateOverlay(Vector3 pos)
+    {
+        Overlay newOverlay = Instantiate(_overlayPrefab, transform);
+
+        newOverlay.transform.localScale = _offset;
         newOverlay.transform.position = pos;
-        overlays.Add(pos, newOverlay);
+
+        _overlays.Add(pos, newOverlay);
+
         SelectOverlay(newOverlay);
     }
 
-    private bool CheckTopBricks(Vector3 pos) {
+    private bool CheckTopBricks(Vector3 pos)
+    {
         bool removed = false;
-        if (topBricks.TryGetValue(pos, out Brick brick)) {
-            //Debug.Log("Checking");
-            if (topBricks.TryGetValue(pos + new Vector3(-offset.x,0,0), out Brick left) && left.spriteId == brick.spriteId) {
+
+        if (_topBricks.TryGetValue(pos, out Brick brick))
+        {
+            if (_topBricks.TryGetValue(pos + new Vector3(-_offset.x, 0, 0), out Brick left) && left.SpriteId == brick.SpriteId)
+            {
                 RemoveTopBrick(left.transform.position);
                 RemoveTopBrick(brick.transform.position);
                 removed = true;
             }
 
-            if (topBricks.TryGetValue(pos + new Vector3(offset.x, 0, 0), out Brick right) && right.spriteId == brick.spriteId) {
+            if (_topBricks.TryGetValue(pos + new Vector3(_offset.x, 0, 0), out Brick right) && right.SpriteId == brick.SpriteId)
+            {
                 RemoveTopBrick(right.transform.position);
                 RemoveTopBrick(brick.transform.position);
                 removed = true;

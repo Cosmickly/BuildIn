@@ -1,57 +1,56 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    private Rigidbody2D rb;
-    private Vector3 direction;
-    public float startSpeed = 7;
-    private float speed;
+    private Rigidbody2D _rb;
+    private Vector3 _direction;
+    [SerializeField] private float _startSpeed = 7;
+    private float _speed;
 
-    private void Awake() {
-        rb = GetComponent<Rigidbody2D>();
+    private void Awake()
+    {
+        _rb = GetComponent<Rigidbody2D>();
     }
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        speed = startSpeed;
+        _speed = _startSpeed;
         RandomDirection();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
-        
+        _rb.velocity = _direction * _speed;
     }
 
-    private void FixedUpdate() {
-        rb.velocity = direction * speed;
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision) {
-        if (collision.gameObject.CompareTag("Boundary")) {
-            speed = startSpeed;
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Boundary"))
+        {
+            _speed = _startSpeed;
             return;
         }
 
-        Vector3 newDirection = Vector3.Reflect(direction, collision.GetContact(0).normal);
+        Vector3 newDirection = Vector3.Reflect(_direction, collision.GetContact(0).normal);
 
-        if (collision.gameObject.CompareTag("Paddle")) {
+        if (collision.gameObject.CompareTag("Paddle"))
+        {
             Vector3 offset = transform.position - collision.transform.position;
             newDirection += new Vector3(offset.x, 0, 0);
         }
 
-        direction = newDirection.normalized;
-        speed += 0.04f;
+        _direction = newDirection.normalized;
+        _speed += 0.04f;
     }
 
-    public void DestroyBall() {
+    public void DestroyBall()
+    {
         Destroy(gameObject);
     }
 
-    public void RandomDirection() {
-        direction = new Vector3(Random.Range(-1f, 1f), -1, 0);
+    public void RandomDirection()
+    {
+        _direction = new Vector3(Random.Range(-1f, 1f), -1, 0);
     }
 }

@@ -1,70 +1,56 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class GridManager : MonoBehaviour
 {
-    private Grid grid;
-    public Vector2Int gridSize;
-    private Vector3 offset;
+    private Grid _grid;
+    public Vector2Int GridSize;
+    private Vector3 _offset;
 
-    public GameObject brickPrefab;
-    public Tilemap overlay;
-    public Color32 highlightColour;
-    private Vector3Int prevMousePos;
+    public GameObject BrickPrefab;
+    public Tilemap Overlay;
+    public Color32 HighlightColour;
+    private Vector3Int _prevMousePos;
 
-    private List<Vector3> bricks = new List<Vector3>();
-
-    private void Awake() {
-        grid = GetComponent<Grid>();
-
+    private void Awake()
+    {
+        _grid = GetComponent<Grid>();
     }
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        //overlayPrefab.CompressBounds();
-        //foreach (Vector3Int pos in overlayPrefab.cellBounds.allPositionsWithin) {
-        //    //if (overlayPrefab.HasTile(pos)) Debug.Log(pos);
-        //    overlayPrefab.SetTileFlags(pos, TileFlags.None);
-        //    overlayPrefab.SetColor(pos, new Color32(0, 0, 0, 0));
-        //}
+        _offset.x = -(((GridSize.x * (1 + _grid.cellGap.x)) - _grid.cellGap.x) / 2);
+        _offset.y = 1;
 
-        offset.x = -(((gridSize.x * (1 + grid.cellGap.x)) - grid.cellGap.x) / 2);
-        offset.y = 1;
-        //transform.position = new Vector3 (-offset ,0,0);
-
-        for (int i = 0; i < gridSize.x; i++) {
-            for (int j = 0; j < gridSize.y; j++) {
-                Vector3 pos = grid.CellToWorld(new Vector3Int(i, j, 0));
-                pos += offset;
-                GameObject brick = Instantiate(brickPrefab, pos, transform.rotation);
-                //activeBricks.Add(pos);
+        for (int i = 0; i < GridSize.x; i++)
+        {
+            for (int j = 0; j < GridSize.y; j++)
+            {
+                Vector3 pos = _grid.CellToWorld(new Vector3Int(i, j, 0));
+                pos += _offset;
+                Instantiate(BrickPrefab, pos, transform.rotation);
             }
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void PlaceBrick(Vector2 pos)
     {
-        
-    }
-
-    public void PlaceBrick(Vector2 pos) {
-        Vector3Int newPos = grid.WorldToCell(pos);
-        if (overlay.HasTile(newPos)) {
-            Instantiate(brickPrefab, newPos, transform.rotation);
-            //activeBricks.Add(newPos);
+        Vector3Int newPos = _grid.WorldToCell(pos);
+        if (Overlay.HasTile(newPos))
+        {
+            Instantiate(BrickPrefab, newPos, transform.rotation);
         }
     }
 
-    public void Highlight(Vector2 pos) {
-        Vector3Int newPos = grid.WorldToCell(pos);
-        if (newPos != prevMousePos) {
-            overlay.SetColor(prevMousePos, new Color32(0, 0, 0, 0));
-            overlay.SetColor(newPos, highlightColour);
-            prevMousePos = newPos;
+    public void Highlight(Vector2 pos)
+    {
+        Vector3Int newPos = _grid.WorldToCell(pos);
+        if (newPos != _prevMousePos)
+        {
+            Overlay.SetColor(_prevMousePos, new Color32(0, 0, 0, 0));
+            Overlay.SetColor(newPos, HighlightColour);
+            _prevMousePos = newPos;
         }
     }
 }

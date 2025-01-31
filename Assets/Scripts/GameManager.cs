@@ -6,19 +6,20 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject startScreen;
-    public GameObject endScreen;
-    public TextMeshProUGUI endText;
-    public GameObject restartButton;
+    [SerializeField] private GameObject _startScreen;
+    [SerializeField] private GameObject _endScreen;
+    [SerializeField] private TextMeshProUGUI _endText;
+    [SerializeField] private GameObject _restartButton;
 
-    public Vector3 ballRespawn;
-    public Ball ball;
-    public Paddle paddle;
-    public float paddleSpeed;
+    [Header("Prefabs")]
+    [SerializeField]  private Vector3 _ballRespawn;
+    [SerializeField] private Paddle _paddle;
+    public Ball Ball;
 
-    public bool playing = false;
+    public bool Playing;
 
-    public Dictionary<string, Color32> pico8Palette = new() {
+    private readonly Dictionary<string, Color32> _pico8Palette = new()
+    {
         {"black", new Color32(0,0,0,255)},
         {"dark-blue", new Color32(29,43,83,255)},
         {"dark-purple ", new Color32(126,37,83, 255)},
@@ -37,64 +38,75 @@ public class GameManager : MonoBehaviour
         {"light-peach", new Color32(255,204,170, 255)}
     };
 
-    private void Start() {
-        endScreen.SetActive(false);
-        startScreen.SetActive(true);
-        restartButton.SetActive(false);
+    private void Start()
+    {
+        _endScreen.SetActive(false);
+        _startScreen.SetActive(true);
+        _restartButton.SetActive(false);
     }
 
-    private void Update() {
-        if (playing) {
-            if (Input.GetKeyDown(KeyCode.Escape)){
-                Application.Quit();
-            }
+    private void Update()
+    {
+        if (!Playing) return;
 
-            if (Input.GetKeyDown(KeyCode.R)) {
-                Restart();
-            }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Restart();
         }
     }
 
-    public void LoseGame() {
-        endText.text = "You Lose!";
+    public void LoseGame()
+    {
+        _endText.text = "You Lose!";
         EndGame();
     }
 
-    public void WinGame() {
-        endText.text = "You Win!";
+    public void WinGame()
+    {
+        _endText.text = "You Win!";
         EndGame();
-        paddle.BreakPaddle();
+        _paddle.BreakPaddle();
     }
 
-    private void EndGame() {
-        playing = false;
-        endScreen.SetActive(true);
-        ball.DestroyBall();
+    private void EndGame()
+    {
+        Playing = false;
+        _endScreen.SetActive(true);
+        Ball.DestroyBall();
     }
 
-    public void StartGame() {
-        startScreen.SetActive(false);
-        restartButton.SetActive(true);
+    public void StartGame()
+    {
+        _startScreen.SetActive(false);
+        _restartButton.SetActive(true);
 
-        ball = Instantiate(ball, new Vector3(0, -1, 0), transform.rotation, transform);
-        paddle = Instantiate(paddle, new Vector3(0, -3.5f, 0), transform.rotation, transform);
+        Ball = Instantiate(Ball, new Vector3(0, -1, 0), transform.rotation, transform);
+        _paddle = Instantiate(_paddle, new Vector3(0, -3.5f, 0), transform.rotation, transform);
 
-        playing = true;
+        Playing = true;
     }
 
-    public IEnumerator RespawnBall() {
-        ball.gameObject.SetActive(false);
+    public IEnumerator RespawnBall()
+    {
+        Ball.gameObject.SetActive(false);
         yield return new WaitForSeconds(2);
-        ball.gameObject.transform.position = ballRespawn;
-        ball.RandomDirection();
-        ball.gameObject.SetActive(true);
+        Ball.gameObject.transform.position = _ballRespawn;
+        Ball.RandomDirection();
+        Ball.gameObject.SetActive(true);
     }
 
-    public void Restart() {
+    public void Restart()
+    {
         SceneManager.LoadScene(0);
     }
 
-    public void Quit() {
+    public void Quit()
+    {
         Application.Quit();
     }
 }

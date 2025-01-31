@@ -1,55 +1,60 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Paddle : MonoBehaviour
 {
-    [SerializeField] private float maxSpeed;
-    [SerializeField] private float pauseLength = 0.1f;
-    private float pauseTimer = 0;
+    [SerializeField] private float _maxSpeed;
+    [SerializeField] private float _pauseLength = 0.1f;
+    private float _pauseTimer;
 
-    private GameManager gameManager;
-    private Ball ball;
+    private GameManager _gameManager;
+    private Ball _ball;
 
-    public ParticleSystem breakEffect;
+    [SerializeField] private ParticleSystem _breakEffectPrefab;
 
-    private void Start() {
-        gameManager = GetComponentInParent<GameManager>();
-        maxSpeed = gameManager.paddleSpeed;
-        ball = gameManager.ball;
+    private void Start()
+    {
+        _gameManager = GetComponentInParent<GameManager>();
+        _ball = _gameManager.Ball;
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (pauseTimer <= 0 && gameManager.playing) {
-            Vector3 ballDistance = ball.transform.position - transform.position;
+        if (_pauseTimer <= 0 && _gameManager.Playing)
+        {
+            Vector3 ballDistance = _ball.transform.position - transform.position;
 
-            if (Mathf.Abs(ballDistance.magnitude) >= .75f) {
-                Vector3 newPosition = transform.position + (ballDistance.x * maxSpeed * Time.deltaTime * Vector3.right);
+            if (Mathf.Abs(ballDistance.magnitude) >= .75f)
+            {
+                Vector3 newPosition = transform.position + (ballDistance.x * _maxSpeed * Time.deltaTime * Vector3.right);
                 newPosition.x = Mathf.Clamp(newPosition.x, -4.25f, 4.25f);
                 transform.position = newPosition;
             }
         }
-        else {
-            pauseTimer -= Time.deltaTime;
+        else
+        {
+            _pauseTimer -= Time.deltaTime;
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision) {
-        if (collision.gameObject.CompareTag("Ball")) {
-            pauseTimer = pauseLength;
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ball"))
+        {
+            _pauseTimer = _pauseLength;
         }
 
-        if (collision.gameObject.CompareTag("Brick")) {
-            gameManager.WinGame();
+        if (collision.gameObject.CompareTag("Brick"))
+        {
+            _gameManager.WinGame();
         }
     }
 
-    public void BreakPaddle() {
-        var main = breakEffect.main;
-        main.startColor = new ParticleSystem.MinMaxGradient(gameManager.pico8Palette["lavender"]);
-        Instantiate(breakEffect, transform.position, transform.rotation);
+    public void BreakPaddle()
+    {
+        var main = _breakEffectPrefab.main;
+        main.startColor = new ParticleSystem.MinMaxGradient(new Color32(131, 118, 156, 255));
+        Instantiate(_breakEffectPrefab, transform.position, transform.rotation);
         Destroy(gameObject);
     }
 }

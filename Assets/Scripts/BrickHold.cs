@@ -1,53 +1,56 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BrickHold : MonoBehaviour
 {
-    //private SpriteRenderer spriteRenderer;
-    private BrickManager brickManager;
-    private GameManager gameManager;
-    private Animator animator;
-    private bool usedHold = false;
-    private Vector3 origin;
+    private BrickManager _brickManager;
+    private GameManager _gameManager;
+    private Animator _animator;
+    private bool _usedHold;
+    private Vector3 _origin;
 
 
-    private void Awake() {
-        //spriteRenderer = GetComponent<SpriteRenderer>();
-        animator = GetComponent<Animator>();
+    private void Awake()
+    {
+        _animator = GetComponent<Animator>();
     }
 
-    private void Start() {
-        brickManager = GetComponentInParent<BrickManager>();
-        gameManager = brickManager.gameManager;
-        origin = transform.position;
+    private void Start()
+    {
+        _brickManager = GetComponentInParent<BrickManager>();
+        _gameManager = _brickManager.GameManager;
+        _origin = transform.position;
     }
 
-    private void Update() {
-        transform.position = origin;
+    private void Update()
+    {
+        transform.position = _origin;
     }
 
-    private void OnMouseOver() {
-        if (!gameManager.playing) return;
+    private void OnMouseOver()
+    {
+        if (!_gameManager.Playing) return;
 
-        animator.SetBool("Highlight", true);
+        _animator.SetBool("Highlight", true);
 
-        if (Input.GetMouseButtonDown(0)) {
-            if (usedHold) {
-                animator.SetTrigger("Invalid");
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (_usedHold)
+            {
+                _animator.SetTrigger("Invalid");
                 return;
             }
-            brickManager.HoldBrick();
+            _brickManager.HoldBrick();
         }
     }
 
-    private void OnMouseExit() {
-        animator.SetBool("Highlight", false);
+    private void OnMouseExit()
+    {
+        _animator.SetBool("Highlight", false);
     }
 
-    public void UsedHold(bool used) {
-        usedHold = used;
-        animator.SetBool("UsedHold", used);
+    public void UsedHold(bool used)
+    {
+        _usedHold = used;
+        _animator.SetBool("UsedHold", used);
     }
-
 }
