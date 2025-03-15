@@ -47,16 +47,24 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (!Playing) return;
-
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
         }
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Playing)
         {
-            Restart();
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                Restart();
+            }
+        }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.KeypadEnter))
+            {
+                StartGame();
+            }
         }
     }
 
@@ -77,6 +85,7 @@ public class GameManager : MonoBehaviour
     {
         Playing = false;
         _endScreen.SetActive(true);
+        _restartButton.SetActive(true);
         Ball.DestroyBall();
     }
 
@@ -105,7 +114,7 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
-    public void Quit()
+    public void Exit()
     {
         Application.Quit();
     }
