@@ -154,7 +154,7 @@ public class BrickManager : MonoBehaviour
         Brick newBrick = _brickStack[0];
         newBrick.transform.position = pos;
         newBrick.transform.localScale = new Vector3(1, 1, 0);
-        newBrick.Activate(false);
+        newBrick.ToggleProtoBrick(true);
         _topBricks.Add(pos, newBrick);
 
         _brickStack.RemoveAt(0);
@@ -251,7 +251,7 @@ public class BrickManager : MonoBehaviour
         foreach (Brick brick in temp)
         {
             brick.transform.position += new Vector3(0, -1, 0);
-            brick.Activate(true);
+            brick.ToggleProtoBrick(false);
             AddActiveBrick(brick);
 
             if (brick.TouchingFloor) GameManager.WinGame();

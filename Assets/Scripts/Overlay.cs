@@ -25,7 +25,7 @@ public class Overlay : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        _animator.SetBool("HasBrick", HasBrick);
+        // _animator.SetBool("HasBrick", HasBrick);
         transform.position = _origin;
     }
 

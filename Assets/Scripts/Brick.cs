@@ -8,9 +8,12 @@ public class Brick : MonoBehaviour
     public int SpriteId;
     public bool TouchingFloor;
 
+    private ProtoBrick _protoBrick;
+
     private void Awake()
     {
         _spriteRend = GetComponent<SpriteRenderer>();
+        _protoBrick = GetComponentInChildren<ProtoBrick>();
     }
 
     // Start is called before the first frame update
@@ -19,6 +22,9 @@ public class Brick : MonoBehaviour
         _brickManager = GetComponentInParent<BrickManager>();
         SpriteId = Random.Range(0, _brickManager.BrickSprites.Count);
         _spriteRend.sprite = _brickManager.BrickSprites[SpriteId];
+
+        _protoBrick.SetColor(_brickManager.BrickColours[SpriteId]);
+        ToggleProtoBrick(false);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -35,11 +41,6 @@ public class Brick : MonoBehaviour
         }
     }
 
-    public void Activate(bool active)
-    {
-        _spriteRend.color = new Color(_spriteRend.color.r, _spriteRend.color.g, _spriteRend.color.b, active ? 1f : 0.5f);
-    }
-
     public void DestroyBrick()
     {
         Destroy(gameObject);
@@ -52,5 +53,11 @@ public class Brick : MonoBehaviour
         Instantiate(_breakEffectPrefab, transform.position, transform.rotation);
         _brickManager.RemoveActiveBrick(transform.position);
         Destroy(gameObject);
+    }
+
+    public void ToggleProtoBrick(bool active)
+    {
+        _spriteRend.enabled = !active;
+        _protoBrick.gameObject.SetActive(active);
     }
 }
