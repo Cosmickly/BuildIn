@@ -6,7 +6,6 @@ public class Brick : MonoBehaviour
     private BrickManager _brickManager;
     [SerializeField] private ParticleSystem _breakEffectPrefab;
     public int SpriteId;
-    public bool TouchingFloor;
 
     private ProtoBrick _protoBrick;
 
@@ -16,7 +15,6 @@ public class Brick : MonoBehaviour
         _protoBrick = GetComponentInChildren<ProtoBrick>();
     }
 
-    // Start is called before the first frame update
     private void Start()
     {
         _brickManager = GetComponentInParent<BrickManager>();

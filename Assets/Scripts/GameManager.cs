@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,9 +11,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _restartButton;
 
     [Header("Prefabs")]
-    [SerializeField]  private Vector3 _ballRespawn;
     [SerializeField] private Paddle _paddle;
-    public Ball Ball;
+    [SerializeField] private Ball _ball;
 
     public bool Playing;
 
@@ -68,45 +66,25 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void StartGame()
+    {
+        _restartButton.SetActive(true);
+        _startScreen.SetActive(false);
+        _ball.ToggleBall(true);
+    }
+
     public void LoseGame()
     {
         _endText.text = "You Lose!";
-        EndGame();
+        _endScreen.SetActive(true);
+        _ball.ToggleBall(false);
     }
 
     public void WinGame()
     {
         _endText.text = "You Win!";
-        EndGame();
-        _paddle.BreakPaddle();
-    }
-
-    private void EndGame()
-    {
-        Playing = false;
         _endScreen.SetActive(true);
-        _restartButton.SetActive(true);
-        Ball.DestroyBall();
-    }
-
-    public void StartGame()
-    {
-        _startScreen.SetActive(false);
-        _restartButton.SetActive(true);
-
-        Ball = Instantiate(Ball, new Vector3(0, -1, 0), transform.rotation, transform);
-        _paddle = Instantiate(_paddle, new Vector3(0, -3.5f, 0), transform.rotation, transform);
-
-        Playing = true;
-    }
-
-    public IEnumerator RespawnBall()
-    {
-        Ball.gameObject.SetActive(false);
-        yield return new WaitForSeconds(2);
-        Ball.gameObject.transform.position = _ballRespawn;
-        Ball.RandomDirection();
-        Ball.gameObject.SetActive(true);
+        _ball.ToggleBall(false);
     }
 
     public void Restart()
@@ -117,5 +95,10 @@ public class GameManager : MonoBehaviour
     public void Exit()
     {
         Application.Quit();
+    }
+
+    public Ball GetBall()
+    {
+        return _ball;
     }
 }

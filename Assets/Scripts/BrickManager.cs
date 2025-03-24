@@ -38,7 +38,6 @@ public class BrickManager : MonoBehaviour
         _gridSize.y = Mathf.Clamp(_gridSize.y, 0, 6);
     }
 
-    // Start is called before the first frame update
     private void Start()
     {
         _brickHold = GetComponentInChildren<BrickHold>(true);
@@ -253,8 +252,6 @@ public class BrickManager : MonoBehaviour
             brick.transform.position += new Vector3(0, -1, 0);
             brick.ToggleProtoBrick(false);
             AddActiveBrick(brick);
-
-            if (brick.TouchingFloor) GameManager.WinGame();
         }
     }
 

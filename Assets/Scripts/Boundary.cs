@@ -7,9 +7,6 @@ public class Boundary : MonoBehaviour
     //TODO: crash when respawning ball during block placement
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Ball"))
-        {
-            StartCoroutine(_gameManager.RespawnBall());
-        }
+
     }
 }

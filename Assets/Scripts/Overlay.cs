@@ -14,7 +14,6 @@ public class Overlay : MonoBehaviour
         _animator = GetComponent<Animator>();
     }
 
-    // Start is called before the first frame update
     private void Start()
     {
         _brickManager = GetComponentInParent<BrickManager>();
@@ -22,7 +21,6 @@ public class Overlay : MonoBehaviour
         _origin = transform.position;
     }
 
-    // Update is called once per frame
     private void Update()
     {
         // _animator.SetBool("HasBrick", HasBrick);
