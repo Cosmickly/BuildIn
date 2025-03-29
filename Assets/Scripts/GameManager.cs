@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.KeypadEnter))
+            if (Input.GetKeyDown(KeyCode.Return))
             {
                 StartGame();
             }
@@ -71,6 +71,7 @@ public class GameManager : MonoBehaviour
         _restartButton.SetActive(true);
         _startScreen.SetActive(false);
         _ball.ToggleBall(true);
+        Playing = true;
     }
 
     public void LoseGame()
@@ -78,6 +79,7 @@ public class GameManager : MonoBehaviour
         _endText.text = "You Lose!";
         _endScreen.SetActive(true);
         _ball.ToggleBall(false);
+        Playing = false;
     }
 
     public void WinGame()
@@ -85,6 +87,7 @@ public class GameManager : MonoBehaviour
         _endText.text = "You Win!";
         _endScreen.SetActive(true);
         _ball.ToggleBall(false);
+        Playing = false;
     }
 
     public void Restart()

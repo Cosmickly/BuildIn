@@ -1,5 +1,7 @@
+using System;
 using UnityEngine;
 
+[Obsolete("Ball handles out of bounds checks")]
 public class Boundary : MonoBehaviour
 {
     [SerializeField] private GameManager _gameManager;

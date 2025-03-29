@@ -53,8 +53,12 @@ public class Overlay : MonoBehaviour
         _animator.SetBool("Highlight", toggle);
     }
 
+    /// <summary>
+    ///     Sets <see cref="HasBrick"/> to false.
+    /// </summary>
     public void ClearOverlay()
     {
+        Debug.Log($"Overlay {transform.position} cleared");
         HasBrick = false;
     }
 }
