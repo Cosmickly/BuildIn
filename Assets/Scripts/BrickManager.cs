@@ -8,6 +8,9 @@ public class BrickManager : MonoBehaviour
 
     [SerializeField] private Brick _brickPrefab;
     [SerializeField] private Overlay _overlayPrefab;
+    /// <summary>
+    ///     Horizontal and Vertical distance between each brick
+    /// </summary>
     [SerializeField] private Vector2 _offset = new(1, 0.5f);
     [SerializeField] private Vector2Int _gridSize = new(5, 4);
 
@@ -17,9 +20,21 @@ public class BrickManager : MonoBehaviour
     private Overlay _selectedOverlay;
 
     private readonly List<Brick> _brickQueue = new();
-    [SerializeField] private Vector3 _brickQueuePos = new(7, -1, 0); // physical position of the queue
-    [SerializeField] private float _brickQueueSize = 1; // physical size of the queue
-    [SerializeField] private int _brickQueueCount = 5; // number of bricks in the queue
+
+    /// <summary>
+    ///     Physical position of the queue
+    /// </summary>
+    [SerializeField] private Vector3 _brickQueuePos = new(7, -1, 0);
+
+    /// <summary>
+    ///     Physical size of the queue
+    /// </summary>
+    [SerializeField] private float _brickQueueSize = 1;
+
+    /// <summary>
+    ///     Number of bricks in the queue
+    /// </summary>
+    [SerializeField] private int _brickQueueCount = 5;
 
     private Brick _heldBrick;
     private BrickHold _brickHold;
@@ -42,6 +57,7 @@ public class BrickManager : MonoBehaviour
     {
         _brickHold = GetComponentInChildren<BrickHold>(true);
 
+        // Creates Overlays and active bricks
         for (int i = 0; i < _gridSize.x; i++)
         {
             CreateOverlay(transform.position + new Vector3(((_gridSize.x - 1) * .5f - i) * _offset.x, 0, 0));
@@ -72,9 +88,9 @@ public class BrickManager : MonoBehaviour
             MoveSelectedOverlay(new Vector3(_offset.x, 0, 0));
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && !_selectedOverlay.HasBrick)
+        if (Input.GetKeyDown(KeyCode.Space) && _selectedOverlay.AddBrickToOverlay())
         {
-            _selectedOverlay.HasBrick = AddTopBrick(_selectedOverlay.transform.position);
+            AddTopBrick(_selectedOverlay.transform.position);
         }
     }
 
@@ -141,7 +157,7 @@ public class BrickManager : MonoBehaviour
     /// <param name="newOverlay"></param>
     public void SelectOverlay(Overlay newOverlay)
     {
-        if (_selectedOverlay) // Fix overlay hasbrick issue
+        if (_selectedOverlay)
         {
             _selectedOverlay.ToggleHighlight(false);
         }
@@ -152,15 +168,15 @@ public class BrickManager : MonoBehaviour
     /// <summary>
     ///     Moves to a new <see cref="Overlay"/>, offset from the currently selected Overlay.
     /// </summary>
-    /// <param name="overlayOffset"></param>
+    /// <param name="overlayOffset">Distance to move left or right</param>
     private void MoveSelectedOverlay(Vector3 overlayOffset)
     {
-        Vector3 pos = _selectedOverlay.transform.position; // TODO: Change this to select overlays by index, not position
+        Vector3 pos = _selectedOverlay.transform.position; // TODO: Change this to select overlays discretly, not with floating position values
         pos += overlayOffset;
 
         while (_overlays.TryGetValue(pos, out Overlay newOverlay))
         {
-            if (newOverlay != _selectedOverlay && !newOverlay.HasBrick)
+            if (newOverlay != _selectedOverlay && !_topBricks.ContainsKey(pos))
             {
                 SelectOverlay(newOverlay);
                 return;
@@ -199,7 +215,7 @@ public class BrickManager : MonoBehaviour
 
         UpdateBrickQueue();
 
-        // If a brick was removed, we don't need to check for a row shift
+        // If a brick was merged, we don't need to check for a row shift.
         if (CheckTopBricks(pos))
         {
             return false;
@@ -214,7 +230,7 @@ public class BrickManager : MonoBehaviour
     }
 
     /// <summary>
-    ///     Removes a <see cref="Brick"/> from the top row.
+    ///     Destroys a <see cref="Brick"/> in the top row and clears the overlay.
     /// </summary>
     /// <param name="pos"></param>
     private void RemoveTopBrick(Vector3 pos)
@@ -226,7 +242,7 @@ public class BrickManager : MonoBehaviour
 
         if (_overlays.TryGetValue(pos, out Overlay overlay))
         {
-            overlay.ClearOverlay();
+            overlay.RemoveBrickFromOverlay();
         }
     }
 
@@ -259,9 +275,10 @@ public class BrickManager : MonoBehaviour
     /// </summary>
     private void ShiftRow()
     {
+        // Clear the full row
         foreach (var overlay in _overlays)
         {
-            overlay.Value.ClearOverlay();
+            overlay.Value.RemoveBrickFromOverlay();
         }
 
         // Move active bricks to temp
@@ -341,5 +358,15 @@ public class BrickManager : MonoBehaviour
         }
 
         return removed;
+    }
+
+    /// <summary>
+    ///     Converts a
+    /// </summary>
+    /// <param name="gridPos"></param>
+    /// <returns></returns>
+    private Vector3 gridToWorld(Vector2Int gridPos)
+    {
+        return gameObject.transform.position;
     }
 }

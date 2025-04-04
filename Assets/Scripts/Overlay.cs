@@ -6,7 +6,7 @@ public class Overlay : MonoBehaviour
     private GameManager _gameManager;
     private Animator _animator;
 
-    public bool HasBrick;
+    private bool _hasBrick;
     private Vector3 _origin;
 
     private void Awake()
@@ -38,9 +38,9 @@ public class Overlay : MonoBehaviour
     {
         if (!Input.GetMouseButtonDown(0)) return;
 
-        if (!HasBrick)
+        if (AddBrickToOverlay())
         {
-            HasBrick = _brickManager.AddTopBrick(transform.position);
+            _brickManager.AddTopBrick(transform.position);
         }
         else
         {
@@ -54,11 +54,34 @@ public class Overlay : MonoBehaviour
     }
 
     /// <summary>
-    ///     Sets <see cref="HasBrick"/> to false.
+    ///     Adds a brick to overlay.
     /// </summary>
-    public void ClearOverlay()
+    public bool AddBrickToOverlay()
     {
-        Debug.Log($"Overlay {transform.position} cleared");
-        HasBrick = false;
+        if (_hasBrick)
+        {
+            Debug.Log($"Attempted to Add brick from occupied overlay {transform.position}.");
+            return false;
+        }
+
+        Debug.Log($"Added brick to Overlay {transform.position}.");
+        _hasBrick = true;
+        return true;
+    }
+
+    /// <summary>
+    ///     Sets <see cref="_hasBrick"/> to false.
+    /// </summary>
+    public bool RemoveBrickFromOverlay()
+    {
+        if (!_hasBrick)
+        {
+            Debug.Log($"Attempted to remove brick from empty overlay {transform.position}.");
+            return false;
+        }
+
+        Debug.Log($"Removed brick from Overlay {transform.position}.");
+        _hasBrick = false;
+        return true;
     }
 }
