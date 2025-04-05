@@ -232,12 +232,13 @@ public class BrickManager : MonoBehaviour
     /// <summary>
     ///     Destroys a <see cref="Brick"/> in the top row and clears the overlay.
     /// </summary>
-    /// <param name="pos"></param>
-    private void RemoveTopBrick(Vector3 pos)
+    /// <param name="pos">Position of the brick.</param>
+    /// <param name="target">Where the brick should merge to.</param>
+    private void MergeTopBrick(Vector3 pos, Vector3 target)
     {
         if (_topBricks.Remove(pos, out Brick brick))
         {
-            brick.DestroyBrick();
+            brick.MergeBrick(target);
         }
 
         if (_overlays.TryGetValue(pos, out Overlay overlay))
@@ -335,29 +336,37 @@ public class BrickManager : MonoBehaviour
     /// <returns>Boolean on if a <see cref="Brick"/> was removed.</returns>
     private bool CheckTopBricks(Vector3 pos)
     {
-        bool removed = false;
+        var bricksToRemove = new List<Vector3>();
 
         if (_topBricks.TryGetValue(pos, out Brick brick))
         {
             if (_topBricks.TryGetValue(pos + new Vector3(-_offset.x, 0, 0), out Brick left) && left.SpriteId == brick.SpriteId)
             {
-                RemoveTopBrick(left.transform.position);
-                removed = true;
+                bricksToRemove.Add(left.transform.position);
             }
 
             if (_topBricks.TryGetValue(pos + new Vector3(_offset.x, 0, 0), out Brick right) && right.SpriteId == brick.SpriteId)
             {
-                RemoveTopBrick(right.transform.position);
-                removed = true;
+                bricksToRemove.Add(right.transform.position);
             }
         }
 
-        if (removed)
+        if (bricksToRemove.Count != 0)
         {
-            RemoveTopBrick(brick.transform.position);
+            bricksToRemove.Add(pos);
+            var target = new Vector3(
+                bricksToRemove.Average(b => b.x),
+                bricksToRemove.Average(b => b.y),
+                bricksToRemove.Average(b => b.z));
+
+            foreach (var b in bricksToRemove)
+            {
+                MergeTopBrick(b, target);
+            }
+            return true;
         }
 
-        return removed;
+        return false;
     }
 
     /// <summary>

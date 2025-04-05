@@ -1,7 +1,9 @@
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Brick : MonoBehaviour
 {
+    private Rigidbody2D _rb;
     private SpriteRenderer _spriteRend;
     private BrickManager _brickManager;
     [SerializeField] private ParticleSystem _breakEffectPrefab;
@@ -9,8 +11,13 @@ public class Brick : MonoBehaviour
 
     private ProtoBrick _protoBrick;
 
+    private Vector3? _target;
+    private bool _merge;
+    private float _shakeIntensity = 0f;
+
     private void Awake()
     {
+        _rb = GetComponent<Rigidbody2D>();
         _spriteRend = GetComponent<SpriteRenderer>();
         _protoBrick = GetComponentInChildren<ProtoBrick>();
     }
@@ -23,6 +30,21 @@ public class Brick : MonoBehaviour
 
         _protoBrick.SetColor(_brickManager.BrickColours[SpriteId]);
         ToggleProtoBrick(false);
+    }
+
+    private void FixedUpdate()
+    {
+        var distance = _target - transform.position;
+        while (_merge && distance.HasValue)
+        {
+            _shakeIntensity += Time.deltaTime; // todo CAUSES A CRASH
+            _rb.AddForce(distance.Value.normalized * (_rb.mass * 10));
+        }
+
+        if (distance?.magnitude < 0.1f)
+        {
+            Break();
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -39,13 +61,15 @@ public class Brick : MonoBehaviour
         }
     }
 
-    public void DestroyBrick()
+    public void MergeBrick(Vector3 target)
     {
-        Destroy(gameObject);
+        _target = target;
+        _merge = true;
     }
 
     private void Break()
     {
+        _merge = false;
         var main = _breakEffectPrefab.main;
         main.startColor = new ParticleSystem.MinMaxGradient(_brickManager.BrickColours[SpriteId]);
         Instantiate(_breakEffectPrefab, transform.position, transform.rotation);
