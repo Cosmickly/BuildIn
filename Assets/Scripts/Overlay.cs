@@ -43,13 +43,9 @@ public class Overlay : MonoBehaviour
     {
         if (!Input.GetMouseButtonDown(0)) return;
 
-        if (_brickManager.AddTopBrick(transform.position))
-        {
-        }
-        else
-        {
-            _animator.SetTrigger(_invalidAnimationHash);
-        }
+        if (_brickManager.AddTopBrick(transform.position)) return;
+
+        _animator.SetTrigger(_invalidAnimationHash);
     }
 
     public void ToggleHighlight(bool toggle)

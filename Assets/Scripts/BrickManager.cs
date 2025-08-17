@@ -222,7 +222,7 @@ public class BrickManager : MonoBehaviour
         // If a brick was merged, we don't need to check for a row shift.
         if (CheckTopBricks(pos))
         {
-            return false;
+            return true;
         }
 
         if (_topBricks.Count == _gridSize.x)
