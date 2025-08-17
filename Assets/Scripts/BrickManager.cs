@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -91,7 +92,7 @@ public class BrickManager : MonoBehaviour
             MoveSelectedOverlay(new Vector3(_offset.x, 0, 0));
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && _selectedOverlay.AddBrickToOverlay())
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             AddTopBrick(_selectedOverlay.transform.position);
         }
@@ -243,14 +244,9 @@ public class BrickManager : MonoBehaviour
         {
             brick.MergeBrick(target);
         }
-
-        if (_overlays.TryGetValue(pos, out Overlay overlay))
-        {
-            overlay.RemoveBrickFromOverlay();
-        }
     }
 
-    //TODO: Unsupported
+    [Obsolete("BrickHold is obsolete")]
     public void HoldBrick()
     {
         if (!_brickHold.isActiveAndEnabled) return;
@@ -279,12 +275,6 @@ public class BrickManager : MonoBehaviour
     /// </summary>
     private void ShiftRow()
     {
-        // Clear the full row
-        foreach (var overlay in _overlays)
-        {
-            overlay.Value.RemoveBrickFromOverlay();
-        }
-
         // Move active bricks to temp
         List<Brick> temp = new();
 
@@ -295,6 +285,7 @@ public class BrickManager : MonoBehaviour
 
         _activeBricks.Clear();
 
+        // Shift temp bricks down, then add back to active
         foreach (Brick brick in temp)
         {
             brick.transform.position += new Vector3(0, -_offset.y, 0);
@@ -303,11 +294,12 @@ public class BrickManager : MonoBehaviour
 
         temp.Clear();
 
-        // Move top bricks
+        // Move top bricks to temp
         temp.AddRange(_topBricks.Select(brick => brick.Value));
 
         _topBricks.Clear();
 
+        // Move temp bricks to playing field, then add to active
         foreach (Brick brick in temp)
         {
             brick.transform.position += new Vector3(0, -1, 0);
