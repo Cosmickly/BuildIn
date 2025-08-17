@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+///     The ProtoBrick game object, a child object of the <see cref="Brick"/>.
+/// </summary>
 public class ProtoBrick : MonoBehaviour
 {
     private ParticleSystem _particleSystem;

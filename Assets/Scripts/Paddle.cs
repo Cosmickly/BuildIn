@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+///     The Paddle game object.
+/// </summary>
 public class Paddle : MonoBehaviour
 {
     [SerializeField] private float _maxSpeed;
@@ -59,6 +62,9 @@ public class Paddle : MonoBehaviour
         }
     }
 
+    /// <summary>
+    ///     Disables the Paddle and plays break effect.
+    /// </summary>
     private void BreakPaddle()
     {
         _spriteRenderer.enabled = false;
@@ -66,6 +72,9 @@ public class Paddle : MonoBehaviour
         _breakEffect.Play();
     }
 
+    /// <summary>
+    ///     Re-enables the Paddle.
+    /// </summary>
     public void SpawnPaddle()
     {
         _spriteRenderer.enabled = true;

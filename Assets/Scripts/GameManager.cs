@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 
+/// <summary>
+///     Manages the game state and scene.
+/// </summary>
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameObject _startScreen;
@@ -70,7 +73,7 @@ public class GameManager : MonoBehaviour
     {
         _restartButton.SetActive(true);
         _startScreen.SetActive(false);
-        _ball.ToggleBall(true);
+        _ball.SetBallActive(true);
         Playing = true;
     }
 
@@ -78,7 +81,7 @@ public class GameManager : MonoBehaviour
     {
         _endText.text = "You Lose!";
         _endScreen.SetActive(true);
-        _ball.ToggleBall(false);
+        _ball.SetBallActive(false);
         Playing = false;
     }
 
@@ -86,7 +89,7 @@ public class GameManager : MonoBehaviour
     {
         _endText.text = "You Win!";
         _endScreen.SetActive(true);
-        _ball.ToggleBall(false);
+        _ball.SetBallActive(false);
         Playing = false;
     }
 

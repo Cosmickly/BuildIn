@@ -1,6 +1,9 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+/// <summary>
+///     The Brick game object.
+/// </summary>
 public class Brick : MonoBehaviour
 {
     private Rigidbody2D _rb;
@@ -29,7 +32,7 @@ public class Brick : MonoBehaviour
         _spriteRend.sprite = _brickManager.BrickSprites[SpriteId];
 
         _protoBrick.SetColor(_brickManager.BrickColours[SpriteId]);
-        ToggleProtoBrick(false);
+        SetProtoBrickActive(false);
     }
 
     private void FixedUpdate()
@@ -67,6 +70,9 @@ public class Brick : MonoBehaviour
         _merge = true;
     }
 
+    /// <summary>
+    ///     Breaks the Brick.
+    /// </summary>
     private void Break()
     {
         _merge = false;
@@ -77,7 +83,8 @@ public class Brick : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void ToggleProtoBrick(bool active)
+
+    public void SetProtoBrickActive(bool active)
     {
         _spriteRend.enabled = !active;
         _protoBrick.gameObject.SetActive(active);

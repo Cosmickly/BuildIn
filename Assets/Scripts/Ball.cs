@@ -2,6 +2,9 @@ using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+/// <summary>
+///     The game ball.
+/// </summary>
 public class Ball : MonoBehaviour
 {
     private Rigidbody2D _rb;
@@ -33,13 +36,20 @@ public class Ball : MonoBehaviour
         _rb.velocity = _direction * _speed;
     }
 
-    public void ToggleBall(bool active)
+    /// <summary>
+    ///     Sets the ball active state.
+    /// </summary>
+    /// <param name="active"></param>
+    public void SetBallActive(bool active)
     {
         _spriteRenderer.enabled = active;
         _collider.enabled = active;
         _speed = active ? _startSpeed : 0f;
     }
 
+    /// <summary>
+    ///     Sets the Ball direction to a random upwards value.
+    /// </summary>
     private void RandomDirection()
     {
         _direction = new Vector3(Random.Range(-1f, 1f), -1, 0);
@@ -49,7 +59,7 @@ public class Ball : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Boundary"))
         {
-            StartCoroutine(DestroyAndRespawn());
+            StartCoroutine(DisableAndRespawn());
         }
 
         Vector3 newDirection = Vector3.Reflect(_direction, other.GetContact(0).normal);
@@ -64,15 +74,19 @@ public class Ball : MonoBehaviour
         _speed += 0.04f;
     }
 
-    private IEnumerator DestroyAndRespawn()
+    /// <summary>
+    ///     Disables the Ball for 2 seconds, then respawans.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator DisableAndRespawn()
     {
         _breakEffect.Play();
-        ToggleBall(false);
+        SetBallActive(false);
 
         yield return new WaitForSeconds(2);
 
         transform.position = _respawnPoint;
         RandomDirection();
-        ToggleBall(true);
+        SetBallActive(true);
     }
 }

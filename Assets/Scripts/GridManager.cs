@@ -1,6 +1,8 @@
+using System;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+[Obsolete("Bricks handled by BrickManager now")]
 public class GridManager : MonoBehaviour
 {
     private Grid _grid;

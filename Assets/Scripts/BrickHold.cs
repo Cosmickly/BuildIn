@@ -1,5 +1,7 @@
+using System;
 using UnityEngine;
 
+[Obsolete("BrickHold not part of game loop anymore")]
 public class BrickHold : MonoBehaviour
 {
     private BrickManager _brickManager;

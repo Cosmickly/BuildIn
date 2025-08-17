@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+///     The Overlay game object. Selectable area where <see cref="ProtoBrick"/>s are placed.
+/// </summary>
 public class Overlay : MonoBehaviour
 {
     private BrickManager _brickManager;
@@ -60,11 +63,9 @@ public class Overlay : MonoBehaviour
     {
         if (_hasBrick)
         {
-            Debug.Log($"Attempted to Add brick from occupied overlay {transform.position}.");
             return false;
         }
 
-        Debug.Log($"Added brick to Overlay {transform.position}.");
         _hasBrick = true;
         return true;
     }
@@ -76,11 +77,9 @@ public class Overlay : MonoBehaviour
     {
         if (!_hasBrick)
         {
-            Debug.Log($"Attempted to remove brick from empty overlay {transform.position}.");
             return false;
         }
 
-        Debug.Log($"Removed brick from Overlay {transform.position}.");
         _hasBrick = false;
         return true;
     }

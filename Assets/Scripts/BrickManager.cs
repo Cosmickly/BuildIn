@@ -2,6 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+///     Manages all <see cref="Brick"/>s in the top row and playing area.
+/// </summary>
 public class BrickManager : MonoBehaviour
 {
     public GameManager GameManager;
@@ -202,7 +205,7 @@ public class BrickManager : MonoBehaviour
         Brick newBrick = _brickQueue[0];
         newBrick.transform.position = pos;
         newBrick.transform.localScale = new Vector3(1, 1, 0);
-        newBrick.ToggleProtoBrick(true);
+        newBrick.SetProtoBrickActive(true);
         _topBricks.Add(pos, newBrick);
 
         _brickQueue.RemoveAt(0);
@@ -308,7 +311,7 @@ public class BrickManager : MonoBehaviour
         foreach (Brick brick in temp)
         {
             brick.transform.position += new Vector3(0, -1, 0);
-            brick.ToggleProtoBrick(false);
+            brick.SetProtoBrickActive(false);
             AddActiveBrick(brick);
         }
     }
