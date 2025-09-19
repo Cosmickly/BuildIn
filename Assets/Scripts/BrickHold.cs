@@ -1,10 +1,12 @@
 using System;
+using Factories;
+using Managers;
 using UnityEngine;
 
 [Obsolete("BrickHold not part of game loop anymore")]
 public class BrickHold : MonoBehaviour
 {
-    private BrickManager _brickManager;
+    private BrickFactory _brickFactory;
     private GameManager _gameManager;
     private Animator _animator;
     private bool _usedHold;
@@ -18,8 +20,8 @@ public class BrickHold : MonoBehaviour
 
     private void Start()
     {
-        _brickManager = GetComponentInParent<BrickManager>();
-        _gameManager = _brickManager.GameManager;
+        _brickFactory = GetComponentInParent<BrickFactory>();
+        // _gameManager = _brickFactory.GameManager;
         _origin = transform.position;
     }
 
@@ -41,7 +43,6 @@ public class BrickHold : MonoBehaviour
                 _animator.SetTrigger("Invalid");
                 return;
             }
-            _brickManager.HoldBrick();
         }
     }
 
