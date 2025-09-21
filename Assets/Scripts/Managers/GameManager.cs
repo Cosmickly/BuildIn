@@ -69,7 +69,7 @@ namespace Managers
             _gridManager = new GridManager(gridConfig, brickFactory, _gridTransform);
             _brickQueueManager = new BrickQueueManager(gridConfig, brickFactory, _brickQueueTransform);
             _overlayManager = new OverlayManager(gridConfig, overlayFactory, _selectionAreaTransform);
-            // _protoBrickManager = new ProtoBrickManager(gridConfig, brickFactory, _selectionAreaTransform);
+            _protoBrickManager = new ProtoBrickManager(gridConfig, brickFactory, _selectionAreaTransform);
         }
 
         private void Start()
@@ -128,7 +128,7 @@ namespace Managers
             _brickQueueManager.InitialiseBrickQueue();
             _gridManager.InitialisePlayingBricks();
             _overlayManager.InitialiseOverlays();
-            // _protoBrickManager.InitialiseProtoBricks();
+            _protoBrickManager.InitialiseProtoBricks();
         }
 
         public void LoseGame()

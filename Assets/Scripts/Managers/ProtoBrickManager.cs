@@ -2,24 +2,28 @@ using Configurations;
 using Factories;
 using Records;
 using UnityEngine;
+using Vector2 = UnityEngine.Vector2;
 
 namespace Managers
 {
     public class ProtoBrickManager
     {
-        private ProtoBrickView[] _brickViews;
-        private BrickState[] _brickStates;
+        private readonly ProtoBrickView[] _brickViews;
+        private readonly BrickState[] _brickStates;
 
-        private IBrickFactory _brickFactory;
+        private readonly IBrickFactory _brickFactory;
         private readonly IGridConfig _gridConfig;
 
-        private Transform _selectionAreaTransform;
+        private readonly Transform _selectionAreaTransform;
 
         public ProtoBrickManager(IGridConfig gridConfig, IBrickFactory brickFactory, Transform selectionAreaTransform)
         {
             _gridConfig = gridConfig;
             _brickFactory = brickFactory;
             _selectionAreaTransform = selectionAreaTransform;
+
+            _brickViews = new ProtoBrickView[_gridConfig.GridSize.x];
+            _brickStates = new BrickState[_gridConfig.GridSize.x];
         }
 
         /// <summary>
@@ -28,14 +32,30 @@ namespace Managers
         public void InitialiseProtoBricks()
         {
             Debug.Log("Initialising ProtoBricks");
+
+            var offset = -new Vector2(_gridConfig.GridSize.x - 1, 0) / 2;
+
             for (var i = 0; i < _gridConfig.GridSize.x; i++)
             {
-                var protoBrickView = _brickFactory.InstantiateProtoBrickView(
-                    _selectionAreaTransform,
-                    new Vector3(((_gridConfig.GridSize.x - 1) * .5f - i) * _gridConfig.BrickOffset.x, 0, 0),
-                    0);
+                _brickStates[i] = new BrickState
+                {
+                    Active = false
+                };
 
-                _brickViews[i] = protoBrickView;
+                _brickViews[i] = _brickFactory.InstantiateProtoBrickView(
+                    _selectionAreaTransform,
+                    new Vector2(i, 0) * _gridConfig.BrickOffset + offset,
+                    1);
+            }
+
+            UpdateBrickStates();
+        }
+
+        private void UpdateBrickStates()
+        {
+            for (var i = 0; i < _brickViews.Length; i++)
+            {
+                _brickViews[i].ApplyBrickState(_brickStates[i]);
             }
         }
 
