@@ -12,7 +12,6 @@ public class BrickHold : MonoBehaviour
     private bool _usedHold;
     private Vector3 _origin;
 
-
     private void Awake()
     {
         _animator = GetComponent<Animator>();
@@ -32,18 +31,16 @@ public class BrickHold : MonoBehaviour
 
     private void OnMouseOver()
     {
-        if (!_gameManager.Playing) return;
+        // if (!_gameManager.Playing) return;
 
         _animator.SetBool("Highlight", true);
 
         if (Input.GetMouseButtonDown(0))
-        {
             if (_usedHold)
             {
                 _animator.SetTrigger("Invalid");
                 return;
             }
-        }
     }
 
     private void OnMouseExit()

@@ -32,8 +32,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 327379484509324489}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8786158968812203059
@@ -101,7 +100,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _breakEffectPrefab: {fileID: 4247600969492272560, guid: b1dabcdeb5bfbb849b26c3ae1dea4d83, type: 3}
-  SpriteId: 0
 --- !u!50 &-8413994074050199701
 Rigidbody2D:
   serializedVersion: 4
@@ -110,7 +108,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5968388151726102923}
-  m_BodyType: 0
+  m_BodyType: 2
   m_Simulated: 1
   m_UseFullKinematicContacts: 1
   m_UseAutoMass: 0
@@ -174,65 +172,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.875, y: 0.375}
   m_EdgeRadius: 0
---- !u!1001 &2798975842474542150
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 2476100576081182863}
-    m_Modifications:
-    - target: {fileID: 2476100576081182863, guid: df4afebdd3938e4438d9249440341758, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2476100576081182863, guid: df4afebdd3938e4438d9249440341758, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2476100576081182863, guid: df4afebdd3938e4438d9249440341758, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2476100576081182863, guid: df4afebdd3938e4438d9249440341758, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2476100576081182863, guid: df4afebdd3938e4438d9249440341758, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2476100576081182863, guid: df4afebdd3938e4438d9249440341758, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2476100576081182863, guid: df4afebdd3938e4438d9249440341758, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2476100576081182863, guid: df4afebdd3938e4438d9249440341758, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2476100576081182863, guid: df4afebdd3938e4438d9249440341758, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2476100576081182863, guid: df4afebdd3938e4438d9249440341758, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5968388151726102923, guid: df4afebdd3938e4438d9249440341758, type: 3}
-      propertyPath: m_Name
-      value: ProtoBrick
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: df4afebdd3938e4438d9249440341758, type: 3}
---- !u!4 &327379484509324489 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2476100576081182863, guid: df4afebdd3938e4438d9249440341758, type: 3}
-  m_PrefabInstance: {fileID: 2798975842474542150}
-  m_PrefabAsset: {fileID: 0}

@@ -14,9 +14,9 @@ namespace Managers
         private Queue<BrickState> _brickQueueStates;
 
         /// <summary>
-        ///     The <see cref="BrickView"/>s in the queue. Index 0 is first in line.
+        ///     The <see cref="PlayingBrickView"/>s in the queue. Index 0 is first in line.
         /// </summary>
-        private BrickView[] _brickQueueViews;
+        private PlayingBrickView[] _brickQueueViews;
 
         //= new(7, -1, 0);
         private readonly Transform _brickQueueTransform;
@@ -24,7 +24,7 @@ namespace Managers
         /// <summary>
         ///     Physical size of bricks in the queue
         /// </summary>
-        private readonly float _brickQueueSize = 1;
+        private const float BrickQueueSize = 2;
 
         /// <summary>
         ///     Total number of bricks in the queue;
@@ -41,23 +41,24 @@ namespace Managers
             _brickQueueTransform = brickQueueTransform;
         }
 
-
         /// <summary>
         ///     Intitialises the Brick queue.
         /// </summary>
         public void InitialiseBrickQueue()
         {
+            Debug.Log("Initialising Brick Queue");
             _brickQueueStates = new Queue<BrickState>();
+            _brickQueueViews = new PlayingBrickView[BrickQueueCount];
 
             for (var i = 0; i < BrickQueueCount; i++)
             {
                 _brickQueueStates.Enqueue(_brickFactory.CreateBrickState());
 
                 _brickQueueViews[i] = _brickFactory
-                    .InstantiateBrickView(
+                    .InstantiatePlayingBrickView(
                         _brickQueueTransform,
-                        new Vector3(0, -i * _brickQueueSize * _gridConfig.BrickOffset.y,
-                            0), _brickQueueSize);
+                        new Vector3(0, -i + _gridConfig.BrickOffset.y, 0),
+                        BrickQueueSize);
             }
 
             UpdateBrickQueueViews();
@@ -83,7 +84,7 @@ namespace Managers
 
             foreach (var brickState in _brickQueueStates)
             {
-                _brickQueueViews[index].UpdateBrickState(brickState);
+                _brickQueueViews[index].ApplyBrickState(brickState);
                 index++;
             }
         }

@@ -12,12 +12,22 @@ namespace Factories
         public BrickState CreateBrickState();
 
         /// <summary>
-        ///     Instantiates a new <see cref="BrickView"/>.
+        ///     Instantiates a new <see cref="PlayingBrickView"/>.
         /// </summary>
         /// <param name="parent">Parent for BrickView</param>
         /// <param name="position">Where to position the BrickView relative to parent</param>
         /// <param name="localScaleMultiplier">Local scale multiplier.</param>
         /// <returns>BrickView</returns>
-        public BrickView InstantiateBrickView(Transform parent, Vector3 position, float localScaleMultiplier);
+        public PlayingBrickView InstantiatePlayingBrickView(Transform parent, Vector3 position,
+            float localScaleMultiplier);
+
+        /// <summary>
+        ///     Instantiates a new <see cref="ProtoBrickView"/>.
+        /// </summary>
+        /// <param name="parent">Parent for ProtoBrickView</param>
+        /// <param name="position">Where to position the ProtoBrickView relative to parent</param>
+        /// <param name="localScaleMultiplier">Local scale multiplier.</param>
+        /// <returns>BrickView</returns>
+        public ProtoBrickView InstantiateProtoBrickView(Transform parent, Vector3 position, float localScaleMultiplier);
     }
 }

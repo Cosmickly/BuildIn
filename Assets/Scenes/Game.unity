@@ -1389,6 +1389,37 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a08bcfa1097b67547a67441616758f9b, type: 3}
+--- !u!1 &95048913
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 95048914}
+  m_Layer: 0
+  m_Name: GridTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &95048914
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 95048913}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1937779168}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &104748491
 GameObject:
   m_ObjectHideFlags: 0
@@ -2156,6 +2187,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 233672654}
   m_CullTransparentMesh: 1
+--- !u!1 &272969978
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 272969979}
+  m_Layer: 0
+  m_Name: BrickQueueTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &272969979
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 272969978}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7, y: 2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1937779168}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &441557703
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3722,6 +3784,37 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1046055865
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1046055866}
+  m_Layer: 0
+  m_Name: SelectionAreaTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1046055866
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1046055865}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 3.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1937779168}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1217035130
 GameObject:
   m_ObjectHideFlags: 0
@@ -6215,12 +6308,17 @@ MonoBehaviour:
   _restartButton: {fileID: 1460215503}
   _paddle: {fileID: 1323588739}
   _ball: {fileID: 588265366}
-  _brickViewPrefab: {fileID: 0}
-  _overlayPrefab: {fileID: 0}
-  _gridTransform: {fileID: 0}
-  _brickQueueTransform: {fileID: 0}
-  _overlayTransform: {fileID: 0}
-  Playing: 0
+  _playingBrickViewPrefab: {fileID: 7781043643926886004, guid: 0cae8bfd5462f18488115a0ae1e45652, type: 3}
+  _protoBrickViewPrefab: {fileID: 7174218428506898821, guid: df4afebdd3938e4438d9249440341758, type: 3}
+  _overlayPrefab: {fileID: 7621974946364210312, guid: c813093e21d72044695c99200e5ac39f, type: 3}
+  _gridTransform: {fileID: 95048914}
+  _brickQueueTransform: {fileID: 272969979}
+  _selectionAreaTransform: {fileID: 1046055866}
+  _brickSprites:
+  - {fileID: 8111009792517379744, guid: 84fed619589e4de4d9b3225588400e81, type: 3}
+  - {fileID: 1716216696583859504, guid: 84fed619589e4de4d9b3225588400e81, type: 3}
+  - {fileID: -2560703778198789032, guid: 84fed619589e4de4d9b3225588400e81, type: 3}
+  _gridSize: {x: 0, y: 0}
 --- !u!4 &1937779168
 Transform:
   m_ObjectHideFlags: 0
@@ -6236,6 +6334,9 @@ Transform:
   m_Children:
   - {fileID: 1323588732}
   - {fileID: 588265370}
+  - {fileID: 95048914}
+  - {fileID: 1046055866}
+  - {fileID: 272969979}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1942169867

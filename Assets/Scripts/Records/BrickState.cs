@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Records
 {
     /// <summary>
-    ///     The state of a <see cref="BrickView"/> or <see cref="ProtoBrickView"/>
+    ///     The state of a <see cref="PlayingBrickView"/> or <see cref="ProtoBrickView"/>
     /// </summary>
     public record BrickState
     {

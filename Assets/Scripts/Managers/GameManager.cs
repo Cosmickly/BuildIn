@@ -12,23 +12,28 @@ namespace Managers
     /// </summary>
     public class GameManager : MonoBehaviour
     {
-        [SerializeField] private GameObject _startScreen;
+        [Header("UI")] [SerializeField] private GameObject _startScreen;
         [SerializeField] private GameObject _endScreen;
         [SerializeField] private TextMeshProUGUI _endText;
         [SerializeField] private GameObject _restartButton;
 
         [Header("Prefabs")] [SerializeField] private Paddle _paddle;
         [SerializeField] private Ball _ball;
-        [SerializeField] private BrickView _brickViewPrefab;
+        [SerializeField] private PlayingBrickView _playingBrickViewPrefab;
+        [SerializeField] private ProtoBrickView _protoBrickViewPrefab;
         [SerializeField] private OverlayView _overlayPrefab;
 
         [Header("Transforms")] [SerializeField]
         private Transform _gridTransform;
 
         [SerializeField] private Transform _brickQueueTransform;
-        [SerializeField] private Transform _overlayTransform;
+        [SerializeField] private Transform _selectionAreaTransform;
 
-        public bool Playing;
+        [Header("Sprites")]
+        [SerializeField] private Sprite[] _brickSprites = new Sprite[3];
+
+        [SerializeField] private Vector2Int _gridSize;
+        private bool _playing;
 
         private readonly Dictionary<string, Color32> _pico8Palette = new()
         {
@@ -50,19 +55,21 @@ namespace Managers
             { "light-peach", new Color32(255, 204, 170, 255) }
         };
 
+        private GridManager _gridManager;
+        private BrickQueueManager _brickQueueManager;
+        private OverlayManager _overlayManager;
+        private ProtoBrickManager _protoBrickManager;
+
         private void Awake()
         {
             var gridConfig = new GridConfig(5, 4, 1, 0.5f);
-            var brickFactory = new BrickFactory(_brickViewPrefab);
+            var brickFactory = new BrickFactory(_playingBrickViewPrefab, _protoBrickViewPrefab, _brickSprites);
             var overlayFactory = new OverlayFactory(_overlayPrefab, gridConfig);
 
-            var gridManager = new GridManager(gridConfig, brickFactory, _gridTransform);
-            var brickQueueManager = new BrickQueueManager(gridConfig, brickFactory, _brickQueueTransform);
-            var overlayManager = new OverlayManager(gridConfig, overlayFactory, _overlayTransform);
-
-            brickQueueManager.InitialiseBrickQueue();
-            gridManager.InitialisePlayingBricks();
-            overlayManager.InitialiseOverlays();
+            _gridManager = new GridManager(gridConfig, brickFactory, _gridTransform);
+            _brickQueueManager = new BrickQueueManager(gridConfig, brickFactory, _brickQueueTransform);
+            _overlayManager = new OverlayManager(gridConfig, overlayFactory, _selectionAreaTransform);
+            _protoBrickManager = new ProtoBrickManager(gridConfig, brickFactory, _selectionAreaTransform);
         }
 
         private void Start()
@@ -76,7 +83,7 @@ namespace Managers
         {
             if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
 
-            if (Playing)
+            if (_playing)
             {
                 if (Input.GetKeyDown(KeyCode.R)) Restart();
 
@@ -103,10 +110,16 @@ namespace Managers
 
         private void StartGame()
         {
+            Debug.Log("Starting Game");
             _restartButton.SetActive(true);
             _startScreen.SetActive(false);
             _ball.SetBallActive(true);
-            Playing = true;
+            _playing = true;
+
+            _brickQueueManager.InitialiseBrickQueue();
+            _gridManager.InitialisePlayingBricks();
+            _overlayManager.InitialiseOverlays();
+            _protoBrickManager.InitialiseProtoBricks();
         }
 
         public void LoseGame()
@@ -114,7 +127,7 @@ namespace Managers
             _endText.text = "You Lose!";
             _endScreen.SetActive(true);
             _ball.SetBallActive(false);
-            Playing = false;
+            _playing = false;
         }
 
         public void WinGame()
@@ -122,7 +135,7 @@ namespace Managers
             _endText.text = "You Win!";
             _endScreen.SetActive(true);
             _ball.SetBallActive(false);
-            Playing = false;
+            _playing = false;
         }
 
         public void Restart()

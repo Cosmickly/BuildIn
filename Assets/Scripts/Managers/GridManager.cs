@@ -26,24 +26,27 @@ namespace Managers
         /// </summary>
         public void InitialisePlayingBricks()
         {
+            Debug.Log("Initialising Playing Bricks");
             for (var i = 0; i < _gridConfig.GridSize.x; i++)
-            for (var j = 0; j < _gridConfig.GridSize.y; j++)
             {
-                _playingBrickStates[i, j] = _brickFactory.CreateBrickState();
+                for (var j = 0; j < _gridConfig.GridSize.y; j++)
+                {
+                    _playingBrickStates[i, j] = _brickFactory.CreateBrickState();
 
-                var brickView = _brickFactory
-                    .InstantiateBrickView(
-                        _gridTransform,
-                        new Vector3(((_gridConfig.GridSize.x - 1) * .5f - i) * _gridConfig.BrickOffset.x,
-                            -(j * _gridConfig.BrickOffset.y) - 1, 0),
-                        1);
+                    var brickView = _brickFactory
+                        .InstantiatePlayingBrickView(
+                            _gridTransform,
+                            new Vector3(((_gridConfig.GridSize.x - 1) * .5f - i) * _gridConfig.BrickOffset.x,
+                                -(j * _gridConfig.BrickOffset.y) - 1, 0),
+                            1);
 
-                brickView.UpdateBrickState(_playingBrickStates[j, i]);
+                    brickView.ApplyBrickState(_playingBrickStates[j, i]);
+                }
             }
         }
 
         /// <summary>
-        ///     Shifts all rows of active and top <see cref="BrickView"/>s down one unit.
+        ///     Shifts all rows of active and top <see cref="PlayingBrickView"/>s down one unit.
         /// </summary>
         private void ShiftRow()
         {

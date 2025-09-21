@@ -28,6 +28,7 @@ namespace Managers
         /// </summary>
         public void InitialiseOverlays()
         {
+            Debug.Log("Initialising Overlays");
             for (var i = 0; i < _gridConfig.GridSize.x; i++)
                 _overlays[i] = _overlayFactory.InstantiateOverlayView(
                     _overlayTransform,
