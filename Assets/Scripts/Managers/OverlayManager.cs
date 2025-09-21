@@ -29,10 +29,17 @@ namespace Managers
         public void InitialiseOverlays()
         {
             Debug.Log("Initialising Overlays");
+
+            var offset = -new Vector2(_gridConfig.GridSize.x - 1, 0) / 2;
+
             for (var i = 0; i < _gridConfig.GridSize.x; i++)
+            {
                 _overlays[i] = _overlayFactory.InstantiateOverlayView(
                     _overlayTransform,
-                    new Vector3(((_gridConfig.GridSize.x - 1) * .5f - i) * _gridConfig.BrickOffset.x, 0, 0));
+                    new Vector2(i, 0) * _gridConfig.BrickOffset + offset
+                );
+                // new Vector3(((_gridConfig.GridSize.x - 1) * .5f - i) * _gridConfig.BrickOffset.x, 0, 0));
+            }
 
             SelectOverlay(0);
         }

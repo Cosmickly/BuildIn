@@ -27,6 +27,9 @@ namespace Managers
         public void InitialisePlayingBricks()
         {
             Debug.Log("Initialising Playing Bricks");
+
+            var offset = -_gridConfig.GridSize / 2;
+
             for (var i = 0; i < _gridConfig.GridSize.x; i++)
             {
                 for (var j = 0; j < _gridConfig.GridSize.y; j++)
@@ -36,7 +39,7 @@ namespace Managers
                     var brickView = _brickFactory
                         .InstantiatePlayingBrickView(
                             _gridTransform,
-                            new Vector2(i, j) * _gridConfig.BrickOffset - _gridConfig.GridSize / 2,
+                            new Vector2(i, j) * _gridConfig.BrickOffset + offset,
                             1);
 
                     brickView.ApplyBrickState(_playingBrickStates[i, j]);

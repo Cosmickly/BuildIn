@@ -17,7 +17,8 @@ namespace Factories
         /// <inheritdoc/>
         public OverlayView InstantiateOverlayView(Transform parent, Vector3 position)
         {
-            var newOverlayView = Object.Instantiate(_overlayViewPrefab, position, Quaternion.identity, parent);
+            var newOverlayView = Object.Instantiate(_overlayViewPrefab, parent, false);
+            newOverlayView.transform.localPosition = position;
             newOverlayView.transform.localScale = _gridConfig.BrickOffset;
             return newOverlayView;
         }

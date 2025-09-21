@@ -68,7 +68,7 @@ namespace Managers
 
             _gridManager = new GridManager(gridConfig, brickFactory, _gridTransform);
             _brickQueueManager = new BrickQueueManager(gridConfig, brickFactory, _brickQueueTransform);
-            // _overlayManager = new OverlayManager(gridConfig, overlayFactory, _selectionAreaTransform);
+            _overlayManager = new OverlayManager(gridConfig, overlayFactory, _selectionAreaTransform);
             // _protoBrickManager = new ProtoBrickManager(gridConfig, brickFactory, _selectionAreaTransform);
         }
 
@@ -81,11 +81,17 @@ namespace Managers
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Application.Quit();
+            }
 
             if (_playing)
             {
-                if (Input.GetKeyDown(KeyCode.R)) Restart();
+                if (Input.GetKeyDown(KeyCode.R))
+                {
+                    Restart();
+                }
 
                 // if (Input.GetKeyDown(KeyCode.LeftArrow))
                 // {
@@ -104,7 +110,10 @@ namespace Managers
             }
             else
             {
-                if (Input.GetKeyDown(KeyCode.Return)) StartGame();
+                if (Input.GetKeyDown(KeyCode.Return))
+                {
+                    StartGame();
+                }
             }
         }
 
@@ -118,7 +127,7 @@ namespace Managers
 
             _brickQueueManager.InitialiseBrickQueue();
             _gridManager.InitialisePlayingBricks();
-            // _overlayManager.InitialiseOverlays();
+            _overlayManager.InitialiseOverlays();
             // _protoBrickManager.InitialiseProtoBricks();
         }
 
