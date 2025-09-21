@@ -62,14 +62,14 @@ namespace Managers
 
         private void Awake()
         {
-            var gridConfig = new GridConfig(5, 4, 1, 0.5f);
+            var gridConfig = new GridConfig(_gridSize.x, _gridSize.y, 1, 0.5f);
             var brickFactory = new BrickFactory(_playingBrickViewPrefab, _protoBrickViewPrefab, _brickSprites);
             var overlayFactory = new OverlayFactory(_overlayPrefab, gridConfig);
 
             _gridManager = new GridManager(gridConfig, brickFactory, _gridTransform);
             _brickQueueManager = new BrickQueueManager(gridConfig, brickFactory, _brickQueueTransform);
-            _overlayManager = new OverlayManager(gridConfig, overlayFactory, _selectionAreaTransform);
-            _protoBrickManager = new ProtoBrickManager(gridConfig, brickFactory, _selectionAreaTransform);
+            // _overlayManager = new OverlayManager(gridConfig, overlayFactory, _selectionAreaTransform);
+            // _protoBrickManager = new ProtoBrickManager(gridConfig, brickFactory, _selectionAreaTransform);
         }
 
         private void Start()
@@ -118,8 +118,8 @@ namespace Managers
 
             _brickQueueManager.InitialiseBrickQueue();
             _gridManager.InitialisePlayingBricks();
-            _overlayManager.InitialiseOverlays();
-            _protoBrickManager.InitialiseProtoBricks();
+            // _overlayManager.InitialiseOverlays();
+            // _protoBrickManager.InitialiseProtoBricks();
         }
 
         public void LoseGame()

@@ -18,8 +18,7 @@ namespace Factories
         /// <param name="position">Where to position the BrickView relative to parent</param>
         /// <param name="localScaleMultiplier">Local scale multiplier.</param>
         /// <returns>BrickView</returns>
-        public PlayingBrickView InstantiatePlayingBrickView(Transform parent, Vector3 position,
-            float localScaleMultiplier);
+        public PlayingBrickView InstantiatePlayingBrickView(Transform parent, Vector3 position, float localScaleMultiplier);
 
         /// <summary>
         ///     Instantiates a new <see cref="ProtoBrickView"/>.

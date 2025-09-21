@@ -18,7 +18,7 @@ namespace Managers
             _brickFactory = brickFactory;
             _gridConfig = gridConfig;
             _gridTransform = gridTransform;
-            _playingBrickStates = new BrickState[_gridConfig.GridSize.y, _gridConfig.GridSize.x];
+            _playingBrickStates = new BrickState[_gridConfig.GridSize.x, _gridConfig.GridSize.y];
         }
 
         /// <summary>
@@ -36,11 +36,10 @@ namespace Managers
                     var brickView = _brickFactory
                         .InstantiatePlayingBrickView(
                             _gridTransform,
-                            new Vector3(((_gridConfig.GridSize.x - 1) * .5f - i) * _gridConfig.BrickOffset.x,
-                                -(j * _gridConfig.BrickOffset.y) - 1, 0),
+                            new Vector2(i, j) * _gridConfig.BrickOffset - _gridConfig.GridSize / 2,
                             1);
 
-                    brickView.ApplyBrickState(_playingBrickStates[j, i]);
+                    brickView.ApplyBrickState(_playingBrickStates[i, j]);
                 }
             }
         }

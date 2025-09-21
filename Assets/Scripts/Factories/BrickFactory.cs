@@ -36,8 +36,7 @@ namespace Factories
         }
 
         /// <inheritdoc/>
-        public PlayingBrickView InstantiatePlayingBrickView(Transform parent, Vector3 position,
-            float localScaleMultiplier)
+        public PlayingBrickView InstantiatePlayingBrickView(Transform parent, Vector3 position, float localScaleMultiplier)
         {
             return InstantiateBrickView(_playingBrickViewPrefab, parent, position, localScaleMultiplier) as
                 PlayingBrickView;
@@ -50,8 +49,7 @@ namespace Factories
                 localScaleMultiplier) as ProtoBrickView;
         }
 
-        private BrickView InstantiateBrickView(BrickView prefab, Transform parent, Vector3 position,
-            float localScaleMultiplier)
+        private BrickView InstantiateBrickView(BrickView prefab, Transform parent, Vector3 position, float localScaleMultiplier)
         {
             Debug.Log($"Instantiating Brick View at {position.ToString()}");
             var newBrickView = Object.Instantiate(prefab, parent, false);
