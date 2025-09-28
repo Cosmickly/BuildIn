@@ -80,6 +80,7 @@ namespace Managers
 
         private void UpdateBrickQueueViews()
         {
+            // Cannot iterate through Queue with i
             var index = 0;
 
             foreach (var brickState in _brickQueueStates)

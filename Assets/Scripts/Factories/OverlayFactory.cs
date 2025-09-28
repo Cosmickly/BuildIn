@@ -1,4 +1,5 @@
 using Configurations;
+using Records;
 using UnityEngine;
 
 namespace Factories

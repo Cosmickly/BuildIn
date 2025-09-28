@@ -28,23 +28,28 @@ public class OverlayView : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        _overlayManager.SelectOverlay(_id);
+        _overlayManager.OverlaySelected(_id);
     }
 
     private void OnMouseOver()
     {
-        if (!Input.GetMouseButtonDown(0)) return;
+        if (!Input.GetMouseButtonDown(0))
+        {
+            return;
+        }
         // todo
 
         _animator.SetTrigger(_invalidAnimationHash);
     }
 
-    public void ToggleHighlight(bool toggle)
+    public void ApplyOverlayState(OverlayState state)
     {
+        _id = state.Id;
+        _animator.SetBool(_highlightAnimationHash, state.Selected);
     }
 
-    public void UpdateOverlayState(OverlayState state)
+    public void SetOverlayManager(OverlayManager overlayManager)
     {
-        _animator.SetBool(_highlightAnimationHash, state.Selected);
+        _overlayManager = overlayManager;
     }
 }

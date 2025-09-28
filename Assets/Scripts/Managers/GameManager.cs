@@ -93,15 +93,15 @@ namespace Managers
                     Restart();
                 }
 
-                // if (Input.GetKeyDown(KeyCode.LeftArrow))
-                // {
-                //     MoveSelectedOverlay(-1);
-                // }
-                //
-                // if (Input.GetKeyDown(KeyCode.RightArrow))
-                // {
-                //     MoveSelectedOverlay(1);
-                // }
+                if (Input.GetKeyDown(KeyCode.LeftArrow))
+                {
+                    _overlayManager.MoveSelectedOverlay(-1);
+                }
+
+                if (Input.GetKeyDown(KeyCode.RightArrow))
+                {
+                    _overlayManager.MoveSelectedOverlay(1);
+                }
                 //
                 // if (Input.GetKeyDown(KeyCode.Space))
                 // {
