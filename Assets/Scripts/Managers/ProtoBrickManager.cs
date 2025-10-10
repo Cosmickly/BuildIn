@@ -16,11 +16,14 @@ namespace Managers
 
         private readonly Transform _selectionAreaTransform;
 
-        public ProtoBrickManager(IGridConfig gridConfig, IBrickFactory brickFactory, Transform selectionAreaTransform)
+        private readonly BrickQueueManager _brickQueueManager;
+
+        public ProtoBrickManager(IGridConfig gridConfig, IBrickFactory brickFactory, Transform selectionAreaTransform, BrickQueueManager brickQueueManager)
         {
             _gridConfig = gridConfig;
             _brickFactory = brickFactory;
             _selectionAreaTransform = selectionAreaTransform;
+            _brickQueueManager = brickQueueManager;
 
             _brickViews = new ProtoBrickView[_gridConfig.GridSize.x];
             _brickStates = new BrickState[_gridConfig.GridSize.x];
@@ -60,12 +63,16 @@ namespace Managers
         }
 
         /// <summary>
-        ///     Dequeues a <see cref="PlayingBrickView"/> off the <see cref="_brickQueue"/> and adds it to the top row.
+        ///     Dequeues a <see cref="PlayingBrickView"/> off the BrickQueue and adds it to the top row.
         ///     Creates a new Brick in the brickQueue.
         /// </summary>
-        public void AddTopBrick(int overlayIndex)
+        public void AddTopBrick(int overlayId)
         {
-            //todo
+            var brickToAdd = _brickQueueManager.DequeueBrick();
+
+            _brickStates[overlayId] = brickToAdd;
+
+            UpdateBrickStates();
         }
 
         /// <summary>

@@ -88,6 +88,8 @@ namespace Managers
                 _brickQueueViews[index].ApplyBrickState(brickState);
                 index++;
             }
+
+            Debug.Log($"BrickQueue updated. {_brickQueueStates.Peek().BrickColor} is at the top");
         }
     }
 }

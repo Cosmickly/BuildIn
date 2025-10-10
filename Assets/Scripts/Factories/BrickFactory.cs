@@ -1,3 +1,4 @@
+using Extensions;
 using Records;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -19,13 +20,6 @@ namespace Factories
 
         // SPRITES
         private readonly Sprite[] _brickSprites;
-
-        private readonly Color[] _brickColours =
-        {
-            new Color32(255, 0, 77, 255),
-            new Color32(41, 173, 255, 255),
-            new Color32(255, 236, 39, 255)
-        };
 
         public BrickFactory(PlayingBrickView playingBrickViewPrefab, ProtoBrickView protoBrickViewPrefab,
             Sprite[] brickSprites)
@@ -61,11 +55,12 @@ namespace Factories
         /// <inheritdoc/>
         public BrickState CreateBrickState()
         {
+            var color = BrickColorPalette.GetRandomBrickColor();
             return new BrickState
             {
                 Active = true,
-                Sprite = _brickSprites[Random.Range(0, _brickSprites.Length)],
-                SpriteColor = _brickColours[Random.Range(0, _brickColours.Length)]
+                Sprite = _brickSprites[(int)color],
+                BrickColor = color
             };
         }
     }

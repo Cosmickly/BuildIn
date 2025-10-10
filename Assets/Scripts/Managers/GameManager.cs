@@ -68,8 +68,8 @@ namespace Managers
 
             _gridManager = new GridManager(gridConfig, brickFactory, _gridTransform);
             _brickQueueManager = new BrickQueueManager(gridConfig, brickFactory, _brickQueueTransform);
-            _overlayManager = new OverlayManager(gridConfig, overlayFactory, _selectionAreaTransform);
-            _protoBrickManager = new ProtoBrickManager(gridConfig, brickFactory, _selectionAreaTransform);
+            _protoBrickManager = new ProtoBrickManager(gridConfig, brickFactory, _selectionAreaTransform, _brickQueueManager);
+            _overlayManager = new OverlayManager(gridConfig, overlayFactory, _selectionAreaTransform, _protoBrickManager);
         }
 
         private void Start()

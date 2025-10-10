@@ -1,3 +1,4 @@
+using Extensions;
 using UnityEngine;
 
 namespace Records
@@ -13,6 +14,6 @@ namespace Records
 
         public Sprite Sprite;
 
-        public Color32 SpriteColor;
+        public BrickColorPalette.BrickColor BrickColor;
     }
 }

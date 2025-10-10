@@ -15,11 +15,15 @@ namespace Managers
         private readonly IOverlayFactory _overlayFactory;
         private readonly Transform _overlayTransform;
 
-        public OverlayManager(IGridConfig gridConfig, IOverlayFactory overlayFactory, Transform overlayTransform)
+        private readonly ProtoBrickManager _protoBrickManager;
+
+        public OverlayManager(IGridConfig gridConfig, IOverlayFactory overlayFactory, Transform overlayTransform, ProtoBrickManager protoBrickManager)
         {
             _gridConfig = gridConfig;
             _overlayFactory = overlayFactory;
             _overlayTransform = overlayTransform;
+            _protoBrickManager = protoBrickManager;
+
             _overlayViews = new OverlayView[_gridConfig.GridSize.x];
             _overlayStates = new OverlayState[_gridConfig.GridSize.x];
         }
@@ -63,9 +67,9 @@ namespace Managers
         /// <summary>
         ///     Changes which <see cref="OverlayView"/> is selected.
         /// </summary>
-        private void UnselectOverlay(int overlayIndex)
+        private void UnselectOverlay(int overlayId)
         {
-            _overlayStates[overlayIndex].Selected = false;
+            _overlayStates[overlayId].Selected = false;
         }
 
         /// <summary>
@@ -86,6 +90,23 @@ namespace Managers
             {
                 _overlayViews[i].ApplyOverlayState(_overlayStates[i]);
             }
+        }
+
+        public void OverlayPressed(int id)
+        {
+            if (!_overlayStates[id].Selected)
+            {
+                Debug.LogError($"Overlay {id} pressed, but is not selected.");
+                return;
+            }
+
+            if (_overlayStates[id].HasBrick)
+            {
+                _overlayViews[id].PlayInvalidAnimation();
+                return;
+            }
+
+            _protoBrickManager.AddTopBrick(id);
         }
     }
 }

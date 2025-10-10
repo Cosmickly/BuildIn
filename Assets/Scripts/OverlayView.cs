@@ -33,13 +33,10 @@ public class OverlayView : MonoBehaviour
 
     private void OnMouseOver()
     {
-        if (!Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
-            return;
+            _overlayManager.OverlayPressed(_id);
         }
-        // todo
-
-        _animator.SetTrigger(_invalidAnimationHash);
     }
 
     public void ApplyOverlayState(OverlayState state)
@@ -51,5 +48,10 @@ public class OverlayView : MonoBehaviour
     public void SetOverlayManager(OverlayManager overlayManager)
     {
         _overlayManager = overlayManager;
+    }
+
+    public void PlayInvalidAnimation()
+    {
+        _animator.SetTrigger(_invalidAnimationHash);
     }
 }

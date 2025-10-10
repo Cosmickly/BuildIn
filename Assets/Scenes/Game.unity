@@ -6316,8 +6316,8 @@ MonoBehaviour:
   _selectionAreaTransform: {fileID: 1046055866}
   _brickSprites:
   - {fileID: 8111009792517379744, guid: 84fed619589e4de4d9b3225588400e81, type: 3}
-  - {fileID: 1716216696583859504, guid: 84fed619589e4de4d9b3225588400e81, type: 3}
   - {fileID: -2560703778198789032, guid: 84fed619589e4de4d9b3225588400e81, type: 3}
+  - {fileID: 1716216696583859504, guid: 84fed619589e4de4d9b3225588400e81, type: 3}
   _gridSize: {x: 5, y: 4}
 --- !u!4 &1937779168
 Transform:

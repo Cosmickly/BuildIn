@@ -1,3 +1,4 @@
+using Extensions;
 using Records;
 using UnityEngine;
 
@@ -46,6 +47,6 @@ public class PlayingBrickView : BrickView
 
         _spriteRend.sprite = state.Sprite;
         var main = _breakEffectPrefab.main;
-        main.startColor = new ParticleSystem.MinMaxGradient(state.SpriteColor);
+        main.startColor = new ParticleSystem.MinMaxGradient(state.BrickColor.ToColor());
     }
 }
