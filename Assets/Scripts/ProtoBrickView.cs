@@ -19,7 +19,7 @@ public class ProtoBrickView : BrickView
     /// <inheritdoc/>
     public override void ApplyBrickState(BrickState state)
     {
-        Debug.Log("Setting proto brick sprite color to " + state.BrickColor);
+        // Debug.Log("Setting proto brick sprite color to " + state.BrickColor);
         _spriteRenderer.enabled = state.Active;
         var main = _particleSystem.main;
         main.startColor = new ParticleSystem.MinMaxGradient(state.BrickColor.ToColor());

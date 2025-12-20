@@ -7,24 +7,22 @@ using UnityEngine;
 /// </summary>
 public class PlayingBrickView : BrickView
 {
-    [SerializeField] private ParticleSystem _breakEffectPrefab;
+    private ParticleSystem _breakEffectPrefab;
     private SpriteRenderer _spriteRend;
+    private Collider2D _collider2D;
 
     private void Awake()
     {
+        _breakEffectPrefab = GetComponent<ParticleSystem>();
         _spriteRend = GetComponent<SpriteRenderer>();
+        _collider2D = GetComponent<Collider2D>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ball"))
         {
-            // Break();
-        }
-
-        if (collision.gameObject.CompareTag("Boundary"))
-        {
-            // Break();
+            Break();
         }
     }
 
@@ -33,7 +31,9 @@ public class PlayingBrickView : BrickView
     /// </summary>
     private void Break()
     {
-        Instantiate(_breakEffectPrefab, transform.position, transform.rotation);
+        _spriteRend.enabled = false;
+        _collider2D.enabled = false;
+        _breakEffectPrefab.Play();
     }
 
     /// <inheritdoc/>

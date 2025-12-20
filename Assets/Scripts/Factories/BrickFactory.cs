@@ -45,7 +45,7 @@ namespace Factories
 
         private BrickView InstantiateBrickView(BrickView prefab, Transform parent, Vector3 position, float localScaleMultiplier)
         {
-            Debug.Log($"Instantiating Brick View at {position.ToString()}");
+            // Debug.Log($"Instantiating Brick View at {position.ToString()}");
             var newBrickView = Object.Instantiate(prefab, parent, false);
             newBrickView.transform.localPosition = position;
             newBrickView.transform.localScale *= localScaleMultiplier;
