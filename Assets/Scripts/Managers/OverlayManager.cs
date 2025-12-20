@@ -9,7 +9,7 @@ namespace Managers
     {
         private readonly OverlayState[] _overlayStates;
         private readonly OverlayView[] _overlayViews;
-        private int _selectedOverlay;
+        private int _focusedOverlay;
 
         private readonly IGridConfig _gridConfig;
         private readonly IOverlayFactory _overlayFactory;
@@ -53,23 +53,39 @@ namespace Managers
                 // new Vector3(((_gridConfig.GridSize.x - 1) * .5f - i) * _gridConfig.BrickOffset.x, 0, 0));
             }
 
-            _selectedOverlay = 0;
-            UpdateOverlayViews();
-        }
-
-        public void OverlaySelected(int overlayId)
-        {
-            UnselectOverlay(_selectedOverlay);
-            _selectedOverlay = overlayId;
+            _focusedOverlay = 0;
             UpdateOverlayViews();
         }
 
         /// <summary>
-        ///     Changes which <see cref="OverlayView"/> is selected.
+        ///     Selects the overlay with
         /// </summary>
-        private void UnselectOverlay(int overlayId)
+        /// <param name="overlayId"></param>
+        public void FocusOverlayById(int overlayId)
         {
-            _overlayStates[overlayId].Selected = false;
+            UnfocusOverlayById(_focusedOverlay);
+            _focusedOverlay = overlayId;
+            UpdateOverlayViews();
+        }
+
+        /// <summary>
+        ///     Sets the <see cref="OverlayState.Focused"/> property on the corresponding <see cref="OverlayState"/> to false.
+        /// </summary>
+        private void UnfocusOverlayById(int overlayId)
+        {
+            _overlayStates[overlayId].Focused = false;
+        }
+
+        /// <summary>
+        ///     Applys the <see cref="OverlayState"/> to all <see cref="OverlayView"/>s.
+        /// </summary>
+        private void UpdateOverlayViews()
+        {
+            _overlayStates[_focusedOverlay].Focused = true;
+            for (var i = 0; i < _overlayViews.Length; i++)
+            {
+                _overlayViews[i].ApplyOverlayState(_overlayStates[i]);
+            }
         }
 
         /// <summary>
@@ -77,36 +93,41 @@ namespace Managers
         /// </summary>
         public void MoveSelectedOverlay(int offset)
         {
-            UnselectOverlay(_selectedOverlay);
-            _selectedOverlay += offset;
-            _selectedOverlay = Mathf.Clamp(_selectedOverlay, 0, _gridConfig.GridSize.x - 1);
+            UnfocusOverlayById(_focusedOverlay);
+            _focusedOverlay += offset;
+            _focusedOverlay = Mathf.Clamp(_focusedOverlay, 0, _gridConfig.GridSize.x - 1);
             UpdateOverlayViews();
         }
 
-        private void UpdateOverlayViews()
+
+
+        /// <summary>
+        ///     Call when an <see cref="OverlayView"/> is selected with the mouse/touchscreen.
+        /// </summary>
+        /// <param name="id"></param>
+        public void OverlaySelected(int id)
         {
-            _overlayStates[_selectedOverlay].Selected = true;
-            for (var i = 0; i < _overlayViews.Length; i++)
+            if (!_overlayStates[id].Focused)
             {
-                _overlayViews[i].ApplyOverlayState(_overlayStates[i]);
+                Debug.LogError($"Overlay {id} selected with mouse, but was not focused. Something has gone wrong.");
+                return;
             }
+
+            TryPlaceFocusedBrick();
         }
 
-        public void OverlayPressed(int id)
+        /// <summary>
+        ///     Attempts to place a Brick as the focused <see cref="OverlayView"/>.
+        /// </summary>
+        public void TryPlaceFocusedBrick()
         {
-            if (!_overlayStates[id].Selected)
+            if (_overlayStates[_focusedOverlay].HasBrick)
             {
-                Debug.LogError($"Overlay {id} pressed, but is not selected.");
+                _overlayViews[_focusedOverlay].PlayInvalidAnimation();
                 return;
             }
 
-            if (_overlayStates[id].HasBrick)
-            {
-                _overlayViews[id].PlayInvalidAnimation();
-                return;
-            }
-
-            _protoBrickManager.AddTopBrick(id);
+            _protoBrickManager.AddTopBrick(_focusedOverlay);
         }
     }
 }

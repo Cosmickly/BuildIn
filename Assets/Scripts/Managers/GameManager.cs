@@ -102,11 +102,11 @@ namespace Managers
                 {
                     _overlayManager.MoveSelectedOverlay(1);
                 }
-                //
-                // if (Input.GetKeyDown(KeyCode.Space))
-                // {
-                //     AddTopBrick(_selectedOverlay);
-                // }
+
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    _overlayManager.TryPlaceFocusedBrick();
+                }
             }
             else
             {

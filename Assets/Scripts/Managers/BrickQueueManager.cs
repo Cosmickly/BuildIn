@@ -67,7 +67,7 @@ namespace Managers
         /// <summary>
         ///     Dequeues a <see cref="BrickState"/> from the queue and creates a new one at the end.
         /// </summary>
-        public BrickState DequeueBrick() //todo use
+        public BrickState DequeueBrick()
         {
             var dequeuedBrick = _brickQueueStates.Dequeue();
 
@@ -88,8 +88,6 @@ namespace Managers
                 _brickQueueViews[index].ApplyBrickState(brickState);
                 index++;
             }
-
-            Debug.Log($"BrickQueue updated. {_brickQueueStates.Peek().BrickColor} is at the top");
         }
     }
 }
