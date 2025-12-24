@@ -35,7 +35,7 @@ namespace Managers
         {
             Debug.Log("Initialising Overlays");
 
-            var offset = -new Vector2(_gridConfig.GridSize.x - 1, 0) / 2;
+            var offset = _gridConfig.GetHorizontalOffset(_gridConfig.GridSize.x);
 
             for (var i = 0; i < _gridConfig.GridSize.x; i++)
             {
@@ -44,10 +44,11 @@ namespace Managers
                     Id = i
                 };
 
-                _overlayViews[i] = _overlayFactory.InstantiateOverlayView(
-                    _overlayTransform,
-                    new Vector2(i, 0) * _gridConfig.BrickOffset + offset
-                );
+                _overlayViews[i] = _overlayFactory
+                    .InstantiateOverlayView(
+                        _overlayTransform,
+                        new Vector2(i, 0) * _gridConfig.BrickOffset + offset
+                    );
 
                 _overlayViews[i].SetOverlayManager(this);
                 // new Vector3(((_gridConfig.GridSize.x - 1) * .5f - i) * _gridConfig.BrickOffset.x, 0, 0));
@@ -98,8 +99,6 @@ namespace Managers
             _focusedOverlay = Mathf.Clamp(_focusedOverlay, 0, _gridConfig.GridSize.x - 1);
             UpdateOverlayViews();
         }
-
-
 
         /// <summary>
         ///     Call when an <see cref="OverlayView"/> is selected with the mouse/touchscreen.

@@ -15,8 +15,10 @@ namespace Configurations
         Vector2 BrickOffset { get; }
 
         /// <summary>
-        ///     Converts a position on the grid to the world
+        ///     Given a number of columns, returns the offset in order to center them on the X axis
         /// </summary>
-        public Vector3 GetWorldPosition(Vector2 position);
+        /// <param name="columns">Number of columns.</param>
+        /// <returns></returns>
+        Vector2 GetHorizontalOffset(int columns);
     }
 }

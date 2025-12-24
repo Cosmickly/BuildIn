@@ -20,9 +20,9 @@ namespace Configurations
         //     _playingGridSize.y = Mathf.Clamp(_playingGridSize.y, 0, 12);
         // }
 
-        public Vector3 GetWorldPosition(Vector2 position)
+        public Vector2 GetHorizontalOffset(int columns)
         {
-            throw new System.NotImplementedException();
+            return -new Vector2(columns - 1, 0) / 2;
         }
     }
 }
