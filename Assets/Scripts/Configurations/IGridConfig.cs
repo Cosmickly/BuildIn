@@ -17,8 +17,7 @@ namespace Configurations
         /// <summary>
         ///     Given a number of columns, returns the offset in order to center them on the X axis
         /// </summary>
-        /// <param name="columns">Number of columns.</param>
         /// <returns></returns>
-        Vector2 GetHorizontalOffset(int columns);
+        Vector2 GetGridOffset(Vector2Int gridSize);
     }
 }

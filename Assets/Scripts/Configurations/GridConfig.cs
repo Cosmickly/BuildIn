@@ -20,9 +20,9 @@ namespace Configurations
         //     _playingGridSize.y = Mathf.Clamp(_playingGridSize.y, 0, 12);
         // }
 
-        public Vector2 GetHorizontalOffset(int columns)
+        public Vector2 GetGridOffset(Vector2Int gridSize)
         {
-            return -new Vector2(columns - 1, 0) / 2;
+            return -new Vector2(gridSize.x - 1, gridSize.y) / 2;
         }
     }
 }

@@ -35,7 +35,8 @@ namespace Managers
         {
             Debug.Log("Initialising Overlays");
 
-            var offset = _gridConfig.GetHorizontalOffset(_gridConfig.GridSize.x);
+            // Remove the Y component, as we only build Overlays on the X axis
+            var offset = _gridConfig.GetGridOffset(_gridConfig.GridSize * Vector2Int.right);
 
             for (var i = 0; i < _gridConfig.GridSize.x; i++)
             {
