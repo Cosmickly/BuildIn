@@ -25,8 +25,8 @@ namespace Managers
             _selectionAreaTransform = selectionAreaTransform;
             _brickQueueManager = brickQueueManager;
 
-            _brickViews = new ProtoBrickView[_gridConfig.GridSize.x];
-            _brickStates = new BrickState[_gridConfig.GridSize.x];
+            _brickViews = new ProtoBrickView[_gridConfig.PlayingGridSize.x];
+            _brickStates = new BrickState[_gridConfig.PlayingGridSize.x];
         }
 
         /// <summary>
@@ -36,9 +36,9 @@ namespace Managers
         {
             Debug.Log("Initialising ProtoBricks");
 
-            var offset = -new Vector2(_gridConfig.GridSize.x - 1, 0) / 2;
+            var offset = -new Vector2(_gridConfig.PlayingGridSize.x - 1, 0) / 2;
 
-            for (var i = 0; i < _gridConfig.GridSize.x; i++)
+            for (var i = 0; i < _gridConfig.PlayingGridSize.x; i++)
             {
                 _brickStates[i] = new BrickState
                 {

@@ -8,8 +8,14 @@ namespace Records
     /// </summary>
     public record BrickState
     {
+        /// <summary>
+        ///     Unique identifier for brick. TODO not set
+        /// </summary>
         public int Id;
 
+        /// <summary>
+        ///     Controls Brick visibility and tangibility
+        /// </summary>
         public bool Active;
 
         public Sprite Sprite;

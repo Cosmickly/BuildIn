@@ -1,3 +1,4 @@
+using Extensions;
 using Records;
 using UnityEngine;
 
@@ -10,6 +11,13 @@ namespace Factories
         /// </summary>
         /// <returns>BrickState</returns>
         public BrickState CreateBrickState();
+
+        /// <summary>
+        ///     Creates a <see cref="BrickState" /> with a given colour.
+        /// </summary>
+        /// <param name="color"></param>
+        /// <returns></returns>
+        public BrickState CreateBrickState(BrickColorPalette.BrickColor color);
 
         /// <summary>
         ///     Instantiates a new <see cref="PlayingBrickView"/>.

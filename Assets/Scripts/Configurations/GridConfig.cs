@@ -4,13 +4,15 @@ namespace Configurations
 {
     public class GridConfig : IGridConfig
     {
-        public Vector2Int GridSize { get; }
+        public Vector2Int PlayingGridSize { get; }
+
+        public int MaxGridSizeY => 13;
 
         public Vector2 BrickOffset { get; }
 
-        public GridConfig(int gridSizeX, int gridSizeY, float brickOffsetX, float brickOffsetY)
+        public GridConfig(int playingGridSizeX, int playingGridSizeY, float brickOffsetX, float brickOffsetY)
         {
-            GridSize = new Vector2Int(gridSizeX, gridSizeY);
+            PlayingGridSize = new Vector2Int(playingGridSizeX, playingGridSizeY);
             BrickOffset = new Vector2(brickOffsetX, brickOffsetY);
         }
 
@@ -20,9 +22,9 @@ namespace Configurations
         //     _playingGridSize.y = Mathf.Clamp(_playingGridSize.y, 0, 12);
         // }
 
-        public Vector2 GetGridOffset(Vector2Int gridSize)
+        public Vector2 GetGridOffset(int x)
         {
-            return -new Vector2(gridSize.x - 1, gridSize.y) / 2;
+            return -new Vector2(x - 1, MaxGridSizeY / 2f) / 2;
         }
     }
 }

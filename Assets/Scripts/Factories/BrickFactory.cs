@@ -63,5 +63,15 @@ namespace Factories
                 BrickColor = color
             };
         }
+
+        public BrickState CreateBrickState(BrickColorPalette.BrickColor color)
+        {
+            return new BrickState
+            {
+                Active = true,
+                Sprite = _brickSprites[(int)color],
+                BrickColor = color
+            };
+        }
     }
 }

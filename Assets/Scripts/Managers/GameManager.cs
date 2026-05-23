@@ -12,19 +12,21 @@ namespace Managers
     /// </summary>
     public class GameManager : MonoBehaviour
     {
-        [Header("UI")] [SerializeField] private GameObject _startScreen;
+        [Header("UI")]
+        [SerializeField] private GameObject _startScreen;
         [SerializeField] private GameObject _endScreen;
         [SerializeField] private TextMeshProUGUI _endText;
         [SerializeField] private GameObject _restartButton;
 
-        [Header("Prefabs")] [SerializeField] private Paddle _paddle;
+        [Header("Prefabs")]
+        [SerializeField] private Paddle _paddle;
         [SerializeField] private Ball _ball;
         [SerializeField] private PlayingBrickView _playingBrickViewPrefab;
         [SerializeField] private ProtoBrickView _protoBrickViewPrefab;
         [SerializeField] private OverlayView _overlayPrefab;
 
-        [Header("Transforms")] [SerializeField]
-        private Transform _gridTransform;
+        [Header("Transforms")]
+        [SerializeField] private Transform _gridTransform;
 
         [SerializeField] private Transform _brickQueueTransform;
         [SerializeField] private Transform _selectionAreaTransform;
@@ -32,7 +34,11 @@ namespace Managers
         [Header("Sprites")]
         [SerializeField] private Sprite[] _brickSprites = new Sprite[3];
 
-        [SerializeField] private Vector2Int _gridSize;
+        [Header("Playing Grid Size")]
+        [SerializeField] [Range(0, 13)] private int _startingGridSizeRows;
+
+        [SerializeField] [Range(0, 13)] private int _startingGridSizeColumns;
+
         private bool _playing;
 
         private readonly Dictionary<string, Color32> _pico8Palette = new()
@@ -55,18 +61,18 @@ namespace Managers
             { "light-peach", new Color32(255, 204, 170, 255) }
         };
 
-        private GridManager _gridManager;
+        private PlayingGridManager _playingGridManager;
         private BrickQueueManager _brickQueueManager;
         private OverlayManager _overlayManager;
         private ProtoBrickManager _protoBrickManager;
 
         private void Awake()
         {
-            var gridConfig = new GridConfig(_gridSize.x, _gridSize.y, 1, 0.5f);
+            var gridConfig = new GridConfig(_startingGridSizeColumns, _startingGridSizeRows, 1, 0.5f);
             var brickFactory = new BrickFactory(_playingBrickViewPrefab, _protoBrickViewPrefab, _brickSprites);
             var overlayFactory = new OverlayFactory(_overlayPrefab, gridConfig);
 
-            _gridManager = new GridManager(gridConfig, brickFactory, _gridTransform);
+            _playingGridManager = new PlayingGridManager(gridConfig, brickFactory, _gridTransform);
             _brickQueueManager = new BrickQueueManager(gridConfig, brickFactory, _brickQueueTransform);
             _protoBrickManager = new ProtoBrickManager(gridConfig, brickFactory, _selectionAreaTransform, _brickQueueManager);
             _overlayManager = new OverlayManager(gridConfig, overlayFactory, _selectionAreaTransform, _protoBrickManager);
@@ -126,7 +132,7 @@ namespace Managers
             _playing = true;
 
             _brickQueueManager.InitialiseBrickQueue();
-            _gridManager.InitialisePlayingBricks();
+            _playingGridManager.InitialisePlayingBricks();
             _overlayManager.InitialiseOverlays();
             _protoBrickManager.InitialiseProtoBricks();
         }

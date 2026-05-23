@@ -24,8 +24,8 @@ namespace Managers
             _overlayTransform = overlayTransform;
             _protoBrickManager = protoBrickManager;
 
-            _overlayViews = new OverlayView[_gridConfig.GridSize.x];
-            _overlayStates = new OverlayState[_gridConfig.GridSize.x];
+            _overlayViews = new OverlayView[_gridConfig.PlayingGridSize.x];
+            _overlayStates = new OverlayState[_gridConfig.PlayingGridSize.x];
         }
 
         /// <summary>
@@ -36,9 +36,9 @@ namespace Managers
             Debug.Log("Initialising Overlays");
 
             // Remove the Y component, as we only build Overlays on the X axis
-            var offset = _gridConfig.GetGridOffset(_gridConfig.GridSize * Vector2Int.right);
+            var gridOffset = Vector2.right * _gridConfig.GetGridOffset(_gridConfig.PlayingGridSize.x);
 
-            for (var i = 0; i < _gridConfig.GridSize.x; i++)
+            for (var i = 0; i < _gridConfig.PlayingGridSize.x; i++)
             {
                 _overlayStates[i] = new OverlayState
                 {
@@ -48,7 +48,7 @@ namespace Managers
                 _overlayViews[i] = _overlayFactory
                     .InstantiateOverlayView(
                         _overlayTransform,
-                        new Vector2(i, 0) * _gridConfig.BrickOffset + offset
+                        new Vector2(i, 0) * _gridConfig.BrickOffset + gridOffset
                     );
 
                 _overlayViews[i].SetOverlayManager(this);
@@ -97,7 +97,7 @@ namespace Managers
         {
             UnfocusOverlayById(_focusedOverlay);
             _focusedOverlay += offset;
-            _focusedOverlay = Mathf.Clamp(_focusedOverlay, 0, _gridConfig.GridSize.x - 1);
+            _focusedOverlay = Mathf.Clamp(_focusedOverlay, 0, _gridConfig.PlayingGridSize.x - 1);
             UpdateOverlayViews();
         }
 

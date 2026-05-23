@@ -7,7 +7,7 @@ namespace Configurations
         /// <summary>
         ///     Horizontal and Vertical distance between each brick
         /// </summary>
-        Vector2Int GridSize { get; }
+        Vector2Int PlayingGridSize { get; }
 
         /// <summary>
         ///     Size of the playing grid.
@@ -18,6 +18,8 @@ namespace Configurations
         ///     Given a number of columns, returns the offset in order to center them on the X axis
         /// </summary>
         /// <returns></returns>
-        Vector2 GetGridOffset(Vector2Int gridSize);
+        Vector2 GetGridOffset(int x);
+
+        public int MaxGridSizeY { get; }
     }
 }

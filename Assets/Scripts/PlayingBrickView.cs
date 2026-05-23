@@ -22,17 +22,24 @@ public class PlayingBrickView : BrickView
     {
         if (collision.gameObject.CompareTag("Ball"))
         {
-            Break();
+            DeactivateBrick();
+            PlayBreakEffect();
         }
     }
 
     /// <summary>
-    ///     Starts the break sequence, playing break animation
+    ///     Disables visibility and collision.
     /// </summary>
-    private void Break()
+    private void DeactivateBrick()
     {
         _spriteRend.enabled = false;
         _collider2D.enabled = false;
+    }
+
+    // Plays the Brick break effect
+    private void PlayBreakEffect()
+    {
+        Debug.Log("Break: " + transform.position);
         _breakEffectPrefab.Play();
     }
 
@@ -41,7 +48,7 @@ public class PlayingBrickView : BrickView
     {
         if (!state.Active)
         {
-            Break();
+            DeactivateBrick();
             return;
         }
 
