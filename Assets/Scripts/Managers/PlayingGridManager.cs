@@ -31,10 +31,8 @@ namespace Managers
         {
             Debug.Log("Initializing Playing Bricks with grid size: " + _gridConfig.PlayingGridSize);
 
-            // We create the bricks starting from bottom left, so we need to offset
+            // We create the bricks starting from top left, so we need to offset
             // the starting position to centre the bricks.
-            // TODO create from top down. This is more intuitive
-            // TODO ive blanked  out stuff that needs changing. Work from here. Good luck
             var gridOffset = _gridConfig.GetGridOffset(_gridConfig.PlayingGridSize.x);
 
             int thing = _gridConfig.MaxGridSizeY - _gridConfig.PlayingGridSize.y;
