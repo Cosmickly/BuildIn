@@ -8,13 +8,8 @@ namespace Records
         public int Id;
 
         /// <summary>
-        ///     Whether or not this Overlay is currently being focused.
+        ///     Whether this Overlay is currently being focused.
         /// </summary>
         public bool Focused;
-
-        /// <summary>
-        ///     Whether or not this Overlay is currently holding a <see cref="ProtoBrickView"/>
-        /// </summary>
-        public bool HasBrick;
     }
 }

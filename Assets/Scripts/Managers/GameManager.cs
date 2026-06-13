@@ -92,10 +92,10 @@ namespace Managers
                 Application.Quit();
             }
 
-            if (Input.GetKeyDown(KeyCode.T))
-            {
-                _playingGridManager.ShiftGrid();
-            }
+            // if (Input.GetKeyDown(KeyCode.T))
+            // {
+            //     _playingGridManager.ShiftGrid();
+            // }
 
             if (_playing)
             {

@@ -10,7 +10,7 @@ namespace Managers
     public class ProtoBrickManager
     {
         private readonly ProtoBrickView[] _protoBrickViews;
-        private readonly BrickState[] _brickStates;
+        private readonly BrickState[] _protoBrickStates;
 
         private readonly IBrickFactory _brickFactory;
         private readonly IGridConfig _gridConfig;
@@ -29,7 +29,7 @@ namespace Managers
             _playingGridManager = playingGridManager;
 
             _protoBrickViews = new ProtoBrickView[_gridConfig.PlayingGridSize.x];
-            _brickStates = new BrickState[_gridConfig.PlayingGridSize.x];
+            _protoBrickStates = new BrickState[_gridConfig.PlayingGridSize.x];
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace Managers
 
             for (var i = 0; i < _gridConfig.PlayingGridSize.x; i++)
             {
-                _brickStates[i] = new BrickState
+                _protoBrickStates[i] = new BrickState
                 {
                     Active = false
                 };
@@ -64,35 +64,46 @@ namespace Managers
         {
             for (var i = 0; i < _protoBrickViews.Length; i++)
             {
-                _protoBrickViews[i].ApplyBrickState(_brickStates[i]);
+                _protoBrickViews[i].ApplyBrickState(_protoBrickStates[i]);
             }
         }
 
         /// <summary>
-        ///     Dequeues a <see cref="PlayingBrickView"/> off the BrickQueue and adds it to the top row.
-        ///     Creates a new Brick in the brickQueue.
+        ///     Attempts to dequeue a <see cref="PlayingBrickView"/> off the BrickQueue and adds it to the top row.
         /// </summary>
-        public void AddTopBrick(int overlayId)
+        /// <returns>false if there is already an Active brick, returns true otherwise.</returns>
+        public bool TryAddTopBrick(int overlayId)
         {
+            if (_protoBrickStates[overlayId].Active)
+            {
+                return false;
+            }
+
             var brickToAdd = _brickQueueManager.DequeueBrick();
 
-            _brickStates[overlayId] = brickToAdd;
+            _protoBrickStates[overlayId] = brickToAdd;
 
             CheckTopBricks();
 
             UpdateBrickStates();
+
+            return true;
         }
 
         /// <summary>
         ///     Checks top <see cref="PlayingBrickView"/>s for a full row
         /// </summary>
-        /// <param name="pos"></param>
-        /// <returns>Boolean on if a <see cref="PlayingBrickView"/> was removed.</returns>
         private void CheckTopBricks()
         {
-            if (_brickStates.All(b => b.Active))
+            if (_protoBrickStates.All(b => b.Active))
             {
-                _playingGridManager.ShiftGrid();
+                _playingGridManager.ShiftGrid(_protoBrickStates);
+                for (var i = 0; i < _protoBrickStates.Length; i++)
+                {
+                    _protoBrickStates[i] = new BrickState { Active = false };
+                }
+
+                UpdateBrickStates();
             }
         }
 

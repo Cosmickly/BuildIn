@@ -71,7 +71,7 @@ namespace Managers
         /// <summary>
         ///     Shifts all rows of active and top <see cref="PlayingBrickView"/>s down one unit.
         /// </summary>
-        public void ShiftGrid()
+        public void ShiftGrid(BrickState[] protoBrickStates)
         {
             // Left to right
             for (var i = 0; i < _gridConfig.PlayingGridSize.x; i++)
@@ -79,12 +79,10 @@ namespace Managers
                 // Bottom to top
                 for (var j = 0; j < _gridConfig.MaxGridSizeY; j++)
                 {
+                    // If top row, set copy ProtoBrick colour
                     if (j == _gridConfig.MaxGridSizeY - 1)
                     {
-                        _playingBrickStates[i, j] = new BrickState
-                        {
-                            Active = false
-                        };
+                        _playingBrickStates[i, j] = _brickFactory.CreateBrickState(protoBrickStates[i].BrickColor);
                         continue;
                     }
 

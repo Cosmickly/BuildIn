@@ -121,13 +121,10 @@ namespace Managers
         /// </summary>
         public void TryPlaceFocusedBrick()
         {
-            if (_overlayStates[_focusedOverlay].HasBrick)
+            if (!_protoBrickManager.TryAddTopBrick(_focusedOverlay))
             {
                 _overlayViews[_focusedOverlay].PlayInvalidAnimation();
-                return;
             }
-
-            _protoBrickManager.AddTopBrick(_focusedOverlay);
         }
     }
 }
