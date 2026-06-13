@@ -1,3 +1,4 @@
+using System.Linq;
 using Configurations;
 using Factories;
 using Records;
@@ -8,7 +9,7 @@ namespace Managers
 {
     public class ProtoBrickManager
     {
-        private readonly ProtoBrickView[] _brickViews;
+        private readonly ProtoBrickView[] _protoBrickViews;
         private readonly BrickState[] _brickStates;
 
         private readonly IBrickFactory _brickFactory;
@@ -17,15 +18,17 @@ namespace Managers
         private readonly Transform _selectionAreaTransform;
 
         private readonly BrickQueueManager _brickQueueManager;
+        private readonly PlayingGridManager _playingGridManager;
 
-        public ProtoBrickManager(IGridConfig gridConfig, IBrickFactory brickFactory, Transform selectionAreaTransform, BrickQueueManager brickQueueManager)
+        public ProtoBrickManager(IGridConfig gridConfig, IBrickFactory brickFactory, Transform selectionAreaTransform, BrickQueueManager brickQueueManager, PlayingGridManager playingGridManager)
         {
             _gridConfig = gridConfig;
             _brickFactory = brickFactory;
             _selectionAreaTransform = selectionAreaTransform;
             _brickQueueManager = brickQueueManager;
+            _playingGridManager = playingGridManager;
 
-            _brickViews = new ProtoBrickView[_gridConfig.PlayingGridSize.x];
+            _protoBrickViews = new ProtoBrickView[_gridConfig.PlayingGridSize.x];
             _brickStates = new BrickState[_gridConfig.PlayingGridSize.x];
         }
 
@@ -45,7 +48,7 @@ namespace Managers
                     Active = false
                 };
 
-                _brickViews[i] = _brickFactory.InstantiateProtoBrickView(
+                _protoBrickViews[i] = _brickFactory.InstantiateProtoBrickView(
                     _selectionAreaTransform,
                     new Vector2(i, 0) * _gridConfig.BrickOffset + offset,
                     1);
@@ -54,11 +57,14 @@ namespace Managers
             UpdateBrickStates();
         }
 
+        /// <summary>
+        ///     Updates all <see cref="ProtoBrickView" />s to match corresponding BrickStates
+        /// </summary>
         private void UpdateBrickStates()
         {
-            for (var i = 0; i < _brickViews.Length; i++)
+            for (var i = 0; i < _protoBrickViews.Length; i++)
             {
-                _brickViews[i].ApplyBrickState(_brickStates[i]);
+                _protoBrickViews[i].ApplyBrickState(_brickStates[i]);
             }
         }
 
@@ -72,17 +78,22 @@ namespace Managers
 
             _brickStates[overlayId] = brickToAdd;
 
+            CheckTopBricks();
+
             UpdateBrickStates();
         }
 
         /// <summary>
-        ///     Checks top <see cref="PlayingBrickView"/>s for matching colors, and removes them.
+        ///     Checks top <see cref="PlayingBrickView"/>s for a full row
         /// </summary>
         /// <param name="pos"></param>
         /// <returns>Boolean on if a <see cref="PlayingBrickView"/> was removed.</returns>
-        private void CheckTopBricks(Vector3 pos)
+        private void CheckTopBricks()
         {
-            // todo
+            if (_brickStates.All(b => b.Active))
+            {
+                _playingGridManager.ShiftGrid();
+            }
         }
 
         /// <summary>

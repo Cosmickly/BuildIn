@@ -2,7 +2,6 @@ using Extensions;
 using Records;
 using UnityEngine;
 using Object = UnityEngine.Object;
-using Random = UnityEngine.Random;
 
 namespace Factories
 {
@@ -64,6 +63,7 @@ namespace Factories
             };
         }
 
+        /// <inheritdoc />
         public BrickState CreateBrickState(BrickColorPalette.BrickColor color)
         {
             return new BrickState

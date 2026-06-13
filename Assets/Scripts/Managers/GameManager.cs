@@ -74,7 +74,7 @@ namespace Managers
 
             _playingGridManager = new PlayingGridManager(gridConfig, brickFactory, _gridTransform);
             _brickQueueManager = new BrickQueueManager(gridConfig, brickFactory, _brickQueueTransform);
-            _protoBrickManager = new ProtoBrickManager(gridConfig, brickFactory, _selectionAreaTransform, _brickQueueManager);
+            _protoBrickManager = new ProtoBrickManager(gridConfig, brickFactory, _selectionAreaTransform, _brickQueueManager, _playingGridManager);
             _overlayManager = new OverlayManager(gridConfig, overlayFactory, _selectionAreaTransform, _protoBrickManager);
         }
 
@@ -90,6 +90,11 @@ namespace Managers
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 Application.Quit();
+            }
+
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                _playingGridManager.ShiftGrid();
             }
 
             if (_playing)

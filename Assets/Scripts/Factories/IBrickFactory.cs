@@ -7,13 +7,13 @@ namespace Factories
     public interface IBrickFactory
     {
         /// <summary>
-        ///     Creates a random <see cref="BrickState"/>.
+        ///     Creates an active random <see cref="BrickState"/>.
         /// </summary>
         /// <returns>BrickState</returns>
         public BrickState CreateBrickState();
 
         /// <summary>
-        ///     Creates a <see cref="BrickState" /> with a given colour.
+        ///     Creates an active <see cref="BrickState" /> with a given colour.
         /// </summary>
         /// <param name="color"></param>
         /// <returns></returns>

@@ -11,6 +11,7 @@ namespace Managers
     public class PlayingGridManager
     {
         private readonly BrickState[,] _playingBrickStates;
+        private readonly BrickView[,] _brickViews;
 
         private readonly IBrickFactory _brickFactory;
         private readonly Transform _gridTransform;
@@ -18,6 +19,7 @@ namespace Managers
 
         public PlayingGridManager(IGridConfig gridConfig, IBrickFactory brickFactory, Transform gridTransform)
         {
+            _brickViews = new BrickView[gridConfig.PlayingGridSize.x, gridConfig.MaxGridSizeY];
             _brickFactory = brickFactory;
             _gridConfig = gridConfig;
             _gridTransform = gridTransform;
@@ -58,6 +60,8 @@ namespace Managers
                             new Vector2(i, j) * _gridConfig.BrickOffset + gridOffset,
                             1);
 
+                    _brickViews[i, j] = brickView;
+
                     // Apply BrickState
                     brickView.ApplyBrickState(_playingBrickStates[i, j]);
                 }
@@ -67,9 +71,43 @@ namespace Managers
         /// <summary>
         ///     Shifts all rows of active and top <see cref="PlayingBrickView"/>s down one unit.
         /// </summary>
-        private void ShiftRow()
+        public void ShiftGrid()
         {
-            // todo
+            // Left to right
+            for (var i = 0; i < _gridConfig.PlayingGridSize.x; i++)
+            {
+                // Bottom to top
+                for (var j = 0; j < _gridConfig.MaxGridSizeY; j++)
+                {
+                    if (j == _gridConfig.MaxGridSizeY - 1)
+                    {
+                        _playingBrickStates[i, j] = new BrickState
+                        {
+                            Active = false
+                        };
+                        continue;
+                    }
+
+                    var brickState = _playingBrickStates[i, j + 1];
+                    _playingBrickStates[i, j] = brickState;
+                }
+            }
+
+            UpdateBrickStates();
+        }
+
+        private void UpdateBrickStates()
+        {
+            // Left to right
+            for (var i = 0; i < _gridConfig.PlayingGridSize.x; i++)
+            {
+                // Top to bottom
+                for (var j = 0; j < _gridConfig.MaxGridSizeY; j++)
+                {
+                    // Apply BrickState
+                    _brickViews[i, j].ApplyBrickState(_playingBrickStates[i, j]);
+                }
+            }
         }
     }
 }

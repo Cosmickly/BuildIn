@@ -10,6 +10,13 @@ namespace Configurations
 
         public Vector2 BrickOffset { get; }
 
+        /// <summary>
+        ///     X is columns, Y is rows
+        /// </summary>
+        /// <param name="playingGridSizeX"></param>
+        /// <param name="playingGridSizeY"></param>
+        /// <param name="brickOffsetX"></param>
+        /// <param name="brickOffsetY"></param>
         public GridConfig(int playingGridSizeX, int playingGridSizeY, float brickOffsetX, float brickOffsetY)
         {
             PlayingGridSize = new Vector2Int(playingGridSizeX, playingGridSizeY);
