@@ -95,12 +95,40 @@ namespace Managers
         /// </summary>
         private void CheckTopBricks()
         {
+            // TODO: bug - wrong bricks are being removed, and sometimes not being removed
+            var bricksToRemove = new bool[_protoBrickStates.Length];
+
+            for (var i = 0; i < _protoBrickStates.Length - 1; i++)
+            {
+                if (_protoBrickStates[i].BrickColor == _protoBrickStates[i + 1].BrickColor && _protoBrickStates[i].Active && _protoBrickStates[i + 1].Active)
+                {
+                    bricksToRemove[i] = true;
+                    bricksToRemove[i + 1] = true;
+                }
+            }
+
+            if (bricksToRemove.Any(b => b))
+            {
+                for (var z = 0; z < _protoBrickStates.Length; z++)
+                {
+                    if (bricksToRemove[z])
+                    {
+                        _protoBrickStates[z].Active = false;
+                    }
+                }
+
+                UpdateBrickStates();
+
+                // If we have removed a brick, we don't need to check for a full row
+                return;
+            }
+
             if (_protoBrickStates.All(b => b.Active))
             {
                 _playingGridManager.ShiftGrid(_protoBrickStates);
-                for (var i = 0; i < _protoBrickStates.Length; i++)
+                for (var j = 0; j < _protoBrickStates.Length; j++)
                 {
-                    _protoBrickStates[i] = new BrickState { Active = false };
+                    _protoBrickStates[j] = new BrickState { Active = false };
                 }
 
                 UpdateBrickStates();
