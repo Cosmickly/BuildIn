@@ -33,7 +33,7 @@ public class Ball : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _rb.velocity = _direction * _speed;
+        // _rb.velocity = _direction * _speed;
     }
 
     /// <summary>

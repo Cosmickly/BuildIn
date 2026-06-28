@@ -12,6 +12,7 @@ public class OverlayView : MonoBehaviour
     private int _highlightAnimationHash;
 
     private int _id;
+    private Vector3 _startPosition;
     private OverlayManager _overlayManager;
 
     public OverlayView(OverlayManager overlayManager)
@@ -24,6 +25,11 @@ public class OverlayView : MonoBehaviour
         _animator = GetComponent<Animator>();
         _invalidAnimationHash = Animator.StringToHash("Invalid");
         _highlightAnimationHash = Animator.StringToHash("Highlight");
+    }
+
+    private void Start()
+    {
+        _startPosition = transform.position;
     }
 
     private void OnMouseEnter()
@@ -52,6 +58,7 @@ public class OverlayView : MonoBehaviour
 
     public void PlayInvalidAnimation()
     {
+        transform.position = _startPosition;
         _animator.SetTrigger(_invalidAnimationHash);
     }
 }

@@ -95,7 +95,6 @@ namespace Managers
         /// </summary>
         private void CheckTopBricks()
         {
-            // TODO: bug - wrong bricks are being removed, and sometimes not being removed
             var bricksToRemove = new bool[_protoBrickStates.Length];
 
             for (var i = 0; i < _protoBrickStates.Length - 1; i++)
